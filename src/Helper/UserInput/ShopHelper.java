@@ -1,9 +1,11 @@
-package Helper;
+package Helper.UserInput;
 
-import Controller.CustomerController;
-import Controller.OwnerController;
-import Model.Customer;
-import Model.Owner;
+import Controller.personActions;
+import Controller.adminControl;
+import Helper.File.fileHandler;
+import Helper.Output_STD_functions;
+import Model.Buyer;
+import Model.shopOwner;
 import Model.Product;
 
 import java.io.File;
@@ -13,8 +15,8 @@ import java.util.Scanner;
 
 public class ShopHelper {
     private static final Scanner SCAN = new Scanner(System.in);
-    private static final List<Customer> CUSTOMERS_LIST = Owner.CUSTOMERS_LIST;
-    private static final List<Product> PRODUCT_LIST = Owner.PRODUCT_LIST;
+    private static final List<Buyer> CUSTOMERS_LIST = shopOwner.buyers;
+    private static final List<Product> PRODUCT_LIST = shopOwner.inventory;
     private static final File ACCOUNTS_CSV = new File("src/CSV/accounts.csv");
     private static final File PRODUCTS_CSV = new File("src/CSV/products.csv");
     private static final File TRANSACTION_CSV = new File("src/CSV/transactions.csv");
@@ -35,7 +37,7 @@ public class ShopHelper {
 
             String input = SCAN.nextLine();
 
-            if (ValidationHelper.hasLetterInput(input)) continue;
+            if (InputChecker.containLetter(input)) continue;
 
             int choice = Integer.parseInt(input);
 
@@ -46,32 +48,32 @@ public class ShopHelper {
                     updateFilesOnExit();
                     return;
                 }
-                default -> UIHelper.sleep(1, "Please choose from 1-3 only!");
+                default -> Output_STD_functions.sleep(1, "Please choose from 1-3 only!");
             }
         }
     }
 
     private static void loadFiles() {
-        FileHelper.loadAccounts(ACCOUNTS_CSV);
-        FileHelper.loadProducts(PRODUCTS_CSV);
-        FileHelper.loadCustomerCart(CUSTOMER_CART_CSV);
-        FileHelper.loadTransactions(TRANSACTION_CSV);
+        fileHandler.loadAccounts(ACCOUNTS_CSV);
+        fileHandler.loadProducts(PRODUCTS_CSV);
+        fileHandler.loadCustomerCart(CUSTOMER_CART_CSV);
+        fileHandler.loadTransactions(TRANSACTION_CSV);
     }
 
     private static void updateFilesOnExit() {
         if (ACCOUNTS_CSV.exists()) ACCOUNTS_CSV.delete();
-        FileHelper.makeFile(ACCOUNTS_CSV.toString(), "FirstName,LastName,Username,Password,Balance\n");
+        fileHandler.makeFile(ACCOUNTS_CSV.toString(), "FirstName,LastName,Username,Password,Balance\n");
 
         if (PRODUCTS_CSV.exists()) PRODUCTS_CSV.delete();
-        FileHelper.makeFile(PRODUCTS_CSV.toString(), "ProductName,ProductPrice,ProductQuantity\n");
+        fileHandler.makeFile(PRODUCTS_CSV.toString(), "ProductName,ProductPrice,ProductQuantity\n");
 
-        for (Customer customer : CUSTOMERS_LIST) {
-            FileHelper.writeToFile(ACCOUNTS_CSV, customer + "\n");
+        for (Buyer buyer : CUSTOMERS_LIST) {
+            fileHandler.writeToFile(ACCOUNTS_CSV, buyer + "\n");
         }
 
         for (Product product : PRODUCT_LIST) {
             if (product.getProductQuantity() != 0) {
-                FileHelper.writeToFile(PRODUCTS_CSV, product + "\n");
+                fileHandler.writeToFile(PRODUCTS_CSV, product + "\n");
             }
         }
     }
@@ -83,27 +85,29 @@ public class ShopHelper {
         System.out.print("Enter your password: ");
         String password = SCAN.nextLine();
 
-        if (ValidationHelper.hasInvalidInput(username, password)) return;
+        if (InputChecker.isInputInvalid(username, password)) return;
 
-        if (username.equals("owner") && password.equals("123")) {
-            UIHelper.loginSuccess();
+//        TODO: implement proper login solution
 
-            OwnerController ownerController = new OwnerController();
-            ownerController.chooseFromDashboard();
+        if (username.equals("admin") && password.equals("pass")) {
+            Output_STD_functions.postLogin();
+
+            adminControl adminControl = new adminControl();
+            adminControl.chooseFromDashboard();
             return;
         }
 
-        for (Customer customer : ShopHelper.CUSTOMERS_LIST) {
-            if (customer.getUsername().equals(username) && customer.getPassword().equals(password)) {
-                UIHelper.loginSuccess();
+        for (Buyer buyer : ShopHelper.CUSTOMERS_LIST) {
+            if (buyer.getUsername().equals(username) && buyer.getPass().equals(password)) {
+                Output_STD_functions.postLogin();
 
-                CustomerController customerController = new CustomerController(customer);
-                customerController.chooseFromDashboard();
+                personActions personActions = new personActions(buyer);
+                personActions.chooseFromDashboard();
                 return;
             }
         }
 
-        UIHelper.sleep(1, "No account found!");
+        Output_STD_functions.sleep(1, "No account found!");
     }
 
     private static void register() {
@@ -119,9 +123,9 @@ public class ShopHelper {
         System.out.print("Enter your password: ");
         String password = SCAN.nextLine();
 
-        if (ValidationHelper.hasInvalidInput(firstName, lastName, username, password)) return;
+        if (InputChecker.isInputInvalid(firstName, lastName, username, password)) return;
 
-        UIHelper.sleep(1, "Registration success!");
-        CUSTOMERS_LIST.add(new Customer(firstName, lastName, username, password));
+        Output_STD_functions.sleep(1, "Registration success!");
+        CUSTOMERS_LIST.add(new Buyer(firstName, lastName, username, password));
     }
 }

@@ -3,18 +3,18 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends User {
-    private final List<Product> MY_CART = new ArrayList<>();
-    private final List<Product> BOUGHT_PRODUCTS = new ArrayList<>();
+public class Buyer extends Person {
+    private final List<Product> shoppingCard = new ArrayList<>();
+    private final List<Product> inventory = new ArrayList<>();
     private Double balance = 0.0;
 
-    public Customer(String firstName, String lastName, String username, String password) {
+    public Buyer(String firstName, String lastName, String username, String password) {
         super(firstName, lastName, username, password);
     }
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%.1f", this.getFirstName(), this.getLastName(), this.getUsername(), this.getPassword(), this.getBalance());
+        return String.format("%s,%s,%s,%s,%.1f", this.getFirstName(), this.getLastName(), this.getUsername(), this.getPass(), this.getBalance());
     }
 
     public Double getBalance() {
@@ -26,10 +26,10 @@ public class Customer extends User {
     }
 
     public List<Product> getMyCart() {
-        return MY_CART;
+        return shoppingCard;
     }
 
     public List<Product> getBoughtProducts() {
-        return BOUGHT_PRODUCTS;
+        return inventory;
     }
 }

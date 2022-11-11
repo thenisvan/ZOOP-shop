@@ -1,7 +1,7 @@
 package View;
 
-import Helper.UIHelper;
-import Model.Customer;
+import Helper.Output_STD_functions;
+import Model.Buyer;
 
 public class BasicView {
     public void showDashboard() {
@@ -15,14 +15,14 @@ public class BasicView {
         System.out.print("#: ");
     }
 
-    public void showUserInfo(Customer customer) {
+    public void showUserInfo(Buyer buyer) {
         System.out.println("\n+++++++++++++++++++++++++++++");
-        System.out.printf("Firstname : %s\nLastname : %s", customer.getFirstName(), customer.getLastName());
+        System.out.printf("Firstname : %s\nLastname : %s", buyer.getFirstName(), buyer.getLastName());
         System.out.println("+++++++++++++++++++++++++++++");
     }
 
-    public void showUserBalance(Customer customer) {
-        UIHelper.sleep(1, "Balance: P" + customer.getBalance());
+    public void showUserBalance(Buyer buyer) {
+        Output_STD_functions.sleep(1, "Balance: P" + buyer.getBalance());
     }
 
 }

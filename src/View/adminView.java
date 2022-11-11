@@ -1,43 +1,43 @@
 package View;
 
-import Helper.UIHelper;
-import Helper.ValidationHelper;
-import Model.Customer;
+import Helper.Output_STD_functions;
+import Helper.UserInput.InputChecker;
+import Model.Buyer;
 import Model.Product;
-import Model.Transaction;
+import Model.BuyProcess;
 
 import java.util.List;
 
-public class OwnerView extends BasicView{
+public class adminView extends BasicView{
     public void showDashboard() {
         System.out.println("""
                 \n
                 What do you want to do?
-                1 -> Add a product
-                2 -> View transactions
-                3 -> View customers details
-                4 -> View your products
-                5 -> Remove a customer
-                6 -> Logout
+                1.) Create new product
+                2.) Show Money Movements
+                3.) Show info about Buyers
+                4.) Show List of Products
+                5.) Remove buyer
+                6.) Logout
                 """);
-        System.out.print(": ");
+        System.out.print("-> ");
     }
 
-    public void showMoneyMovement(List<Transaction> movements) {
-        if (movements.size() == 0) {
-            UIHelper.sleep(1, "No transactions for now!");
+    public void showMoneyMovement(List<BuyProcess> m) {
+        if (m.size() == 0) {
+            Output_STD_functions.sleep(1, "No transactions for now!");
             return;
         }
 
-        movements.forEach(transaction -> {
+        m.forEach(transaction -> {
             System.out.println("\n+++++++++++++++++++++++++++++");
-            System.out.println(transaction.getCustomer().getFirstName() + " " + transaction.getCustomer().getLastName() + " bought " + transaction.getProductInfo());
+            System.out.println(transaction.getBuyer().getFirstName() + " " + transaction.getBuyer().getLastName() + " bought " + transaction.showInfo());
             System.out.println("+++++++++++++++++++++++++++++\n");
         });
     }
 
-    public void showCustomerInfo(List<Customer> c) {
-        if (!ValidationHelper.hasCustomers(c)) return;
+    public void showCustomerInfo(List<Buyer> c) {
+        if (!InputChecker.hasCustomers(c)) return;
 
         c.forEach(customer -> {
             System.out.println("\n+++++++++++++++++++++++++++++");
@@ -48,7 +48,7 @@ public class OwnerView extends BasicView{
 
     public void showProducts(List<Product> p) {
         if (p.size() == 0) {
-            UIHelper.sleep(1, "You haven't add products yet!");
+            Output_STD_functions.sleep(1, "You haven't add products yet!");
             return;
         }
 

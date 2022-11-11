@@ -8,11 +8,11 @@
 - As the `owner` you can do the following:
   - Add a product.
   - View transactions.
-  - View customers details.
+  - View buyers details.
   - View your products.
-  - Remove a customer.
+  - Remove a buyer.
   - Your **_added products_**,**_transactions_**, and **_customers_** are stored into a **CSV** file so that when you exit the program, you can **still see those informations.**
-- And the `customers` can do the following:
+- And the `buyers` can do the following:
   - Cash in.
   - Go shopping. (can add to cart or buy)
   - View Info.
@@ -43,7 +43,7 @@
 
 - You can now add products!
 
-- Register customers and test it!
+- Register buyers and test it!
 
 ---
 

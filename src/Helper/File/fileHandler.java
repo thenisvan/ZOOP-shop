@@ -1,30 +1,30 @@
-package Helper;
+package Helper.File;
 
-import Model.Customer;
-import Model.Owner;
+import Model.Buyer;
+import Model.shopOwner;
 import Model.Product;
-import Model.Transaction;
+import Model.BuyProcess;
 
 import java.io.*;
 import java.util.List;
 
-public class FileHelper {
-    private static final List<Customer> CUSTOMERS_LIST = Owner.CUSTOMERS_LIST;
-    private static final List<Product> PRODUCT_LIST = Owner.PRODUCT_LIST;
-    private static final List<Transaction> TRANSACTION_LIST = Owner.TRANSACTION_LIST;
+public class fileHandler {
+    private static final List<Buyer> listOfBuyers = shopOwner.buyers;
+    private static final List<Product> listOfProducts = shopOwner.inventory;
+    private static final List<BuyProcess> listOfMMovements = shopOwner.movements;
 
     /*
      * @param filePath {where you want your file to go.}
      * @param header {The content you want to initially add.}
      */
-    public static void makeFile(String filePath, String header) {
-        File file = new File(filePath);
+    public static void makeFile(String path, String h) {
+        File file = new File(path);
 
         try {
             if (new File("src/CSV").mkdir()) {
-                if (file.createNewFile()) writeToFile(file, header);
+                if (file.createNewFile()) writeToFile(file, h);
             } else {
-                if (file.createNewFile()) writeToFile(file, header);
+                if (file.createNewFile()) writeToFile(file, h);
                 System.out.print("");
             }
         } catch (IOException e) {
@@ -57,10 +57,10 @@ public class FileHelper {
                 String[] data = line.split(",");
 
                 //? Makes a customer based on the data to imitate loading from database.
-                Customer customer = new Customer(data[0], data[1], data[2], data[3]);
-                customer.setBalance(Double.parseDouble(data[4]));
+                Buyer buyer = new Buyer(data[0], data[1], data[2], data[3]);
+                buyer.setBalance(Double.parseDouble(data[4]));
 
-                CUSTOMERS_LIST.add(customer);
+                listOfBuyers.add(buyer);
             }
 
         } catch (IOException e) {
@@ -82,7 +82,7 @@ public class FileHelper {
 
                 //? Makes a product based on the data to imitate loading from database.
                 Product product = new Product(data[0], Double.parseDouble(data[1]), Integer.parseInt(data[2]));
-                PRODUCT_LIST.add(product);
+                listOfProducts.add(product);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,7 +105,7 @@ public class FileHelper {
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(TRANSACTIONS_CSV))) {
             String line;
-            Customer customer = null;
+            Buyer buyer = null;
             Product product = null;
 
             String header = bufferedReader.readLine(); // eats the header
@@ -117,22 +117,22 @@ public class FileHelper {
                 String customerName = data[0];
                 String productName = data[1];
 
-                for (Customer c : CUSTOMERS_LIST) {
-                    if (c.getFirstName().equals(customerName)) customer = c;
+                for (Buyer c : listOfBuyers) {
+                    if (c.getFirstName().equals(customerName)) buyer = c;
                 }
 
-                for (Product p : PRODUCT_LIST) {
+                for (Product p : listOfProducts) {
                     if (p.getProductName().equals(productName)) product = p;
                 }
 
-                if (customer == null || product == null) return;
+                if (buyer == null || product == null) return;
 
                 //? Makes a transaction based on the data to imitate loading from database.
-                TRANSACTION_LIST.add(new Transaction(customer, product));
+                listOfMMovements.add(new BuyProcess(buyer, product));
 
-                product.setBOUGHT_QUANTITY(Integer.valueOf(data[3]));
+                product.setAmount_toBuy(Integer.valueOf(data[3]));
 
-                List<Product> CUSTOMER_BOUGHT_PRODUCTS = customer.getBoughtProducts();
+                List<Product> CUSTOMER_BOUGHT_PRODUCTS = buyer.getBoughtProducts();
                 CUSTOMER_BOUGHT_PRODUCTS.add(product);
             }
 
@@ -147,7 +147,7 @@ public class FileHelper {
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CUSTOMER_CART_CSV))) {
             String line;
-            Customer customer = null;
+            Buyer buyer = null;
             List<Product> customerCart = null;
             Product product = null;
 
@@ -160,23 +160,23 @@ public class FileHelper {
                 String customerName = data[0];
                 String productName = data[1];
 
-                for (Customer c : CUSTOMERS_LIST) {
+                for (Buyer c : listOfBuyers) {
                     if (c.getFirstName().equals(customerName)) {
-                        customer = c;
-                        customerCart = customer.getMyCart();
+                        buyer = c;
+                        customerCart = buyer.getMyCart();
                     }
                 }
 
-                for (Product p : PRODUCT_LIST) {
+                for (Product p : listOfProducts) {
                     if (p.getProductName().equals(productName)) product = p;
                 }
 
-                if (customer == null || product == null || customerCart == null) return;
+                if (buyer == null || product == null || customerCart == null) return;
 
                 //? Makes a product and store to the customerCart based on the data to imitate loading from database.
                 Product loadedProduct = new Product(productName, Double.parseDouble(data[2]), product.getProductQuantity());
 
-                loadedProduct.setBOUGHT_QUANTITY(Integer.valueOf(data[3]));
+                loadedProduct.setAmount_toBuy(Integer.valueOf(data[3]));
                 customerCart.add(loadedProduct);
             }
 

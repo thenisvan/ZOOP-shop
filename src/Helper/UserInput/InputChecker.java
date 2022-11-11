@@ -1,22 +1,23 @@
-package Helper;
+package Helper.UserInput;
 
-import Model.Customer;
+import Helper.Output_STD_functions;
+import Model.Buyer;
 import Model.Product;
 
 import java.util.List;
 
-public class ValidationHelper {
+public class InputChecker {
     /*
      * @param params... {n number of params to be checked.}
      * @return boolean {returns true if one of the params is null or empty.}
      */
-    public static boolean hasInvalidInput(String... params) {
+    public static boolean isInputInvalid(String... params) {
         boolean result = false;
 
         for (String param : params) {
             if (param == null || param.trim().isEmpty()) {
                 result = true;
-                UIHelper.sleep(1, "Please answer properly!");
+                Output_STD_functions.sleep(1, "Please answer properly!");
                 break;
             }
         }
@@ -28,13 +29,13 @@ public class ValidationHelper {
      * @param input {User input to be checked.}
      * @return boolean {returns true if the input has letters.}
      */
-    public static boolean hasLetterInput(String input) {
+    public static boolean containLetter(String input) {
         if (input.matches("[A-Za-z]*")) {
             System.out.println("""
                                             
-                    |-----------------------------------|
+                    |+++++++++++++++++++++++++++++++++++|
                     |*   Please enter numbers only!!   *|
-                    |-----------------------------------|
+                    |+++++++++++++++++++++++++++++++++++|
                     """);
             return true;
         }
@@ -44,28 +45,28 @@ public class ValidationHelper {
     public static void printNumberFormatExceptionMessage() {
         System.out.println("""
                                 
-                |-------------------------------------------|
+                |+++++++++++++++++++++++++++++++++++++++++++|
                 |*   Please enter the appropriate type!!   *|
-                |-------------------------------------------|
+                |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        UIHelper.sleep(2, "Redirecting you back to the shop...");
+        Output_STD_functions.sleep(1, "Redirecting you back to the shop...");
     }
 
     public static void printIndexOutOfBoundsExceptionMessage() {
         System.out.println("""
                                 
-                |-------------------------------------------|
+                |+++++++++++++++++++++++++++++++++++++++++++|
                 |*   Please input from the range only!!!   *|
-                |-------------------------------------------|
+                |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        UIHelper.sleep(2, "Redirecting you back to the shop...");
+        Output_STD_functions.sleep(1, "Redirecting you back to the shop...");
     }
 
-    public static boolean hasCustomers(List<Customer> customers) {
+    public static boolean hasCustomers(List<Buyer> buyers) {
         boolean result = true;
 
-        if (customers.size() == 0) {
-            UIHelper.sleep(1, "No customers for now!");
+        if (buyers.size() == 0) {
+            Output_STD_functions.sleep(1, "No customers for now!");
             result = false;
         }
         return result;
@@ -75,7 +76,7 @@ public class ValidationHelper {
         boolean result = false;
 
         if (products.size() == 0) {
-            UIHelper.sleep(1, "Your cart is empty!");
+            Output_STD_functions.sleep(1, "Your cart is empty!");
             result = true;
         }
         return result;

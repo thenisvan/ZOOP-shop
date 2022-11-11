@@ -1,15 +1,15 @@
 package Model;
 
 public class Product {
-    private final String PRODUCT_NAME;
-    private final Double PRODUCT_PRICE;
-    private Integer PRODUCT_QUANTITY;
-    private Integer BOUGHT_QUANTITY;
+    private final String productName;
+    private final Double productPrice;
+    private Integer amount_available;
+    private Integer amount_toBuy;
 
     public Product(String productName, Double productPrice, Integer productQuantity) {
-        this.PRODUCT_NAME = productName;
-        this.PRODUCT_PRICE = productPrice;
-        this.PRODUCT_QUANTITY = productQuantity;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.amount_available = productQuantity;
     }
 
     @Override
@@ -18,26 +18,26 @@ public class Product {
     }
 
     public String getProductName() {
-        return PRODUCT_NAME;
+        return productName;
     }
 
     public Double getProductPrice() {
-        return PRODUCT_PRICE;
+        return productPrice;
     }
 
     public Integer getProductQuantity() {
-        return PRODUCT_QUANTITY;
+        return amount_available;
     }
 
     public void setProductQuantity(Integer i) {
-        PRODUCT_QUANTITY = i;
+        amount_available = i;
     }
 
-    public Integer getBOUGHT_QUANTITY() {
-        return BOUGHT_QUANTITY;
+    public Integer getAmount_toBuy() {
+        return amount_toBuy;
     }
 
-    public void setBOUGHT_QUANTITY(Integer BOUGHT_QUANTITY) {
-        this.BOUGHT_QUANTITY = BOUGHT_QUANTITY;
+    public void setAmount_toBuy(Integer amount_toBuy) {
+        this.amount_toBuy = amount_toBuy;
     }
 }

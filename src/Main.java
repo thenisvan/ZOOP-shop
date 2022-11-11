@@ -1,4 +1,4 @@
-import Helper.ShopHelper;
+import Helper.UserInput.ShopHelper;
 
 import java.io.IOException;
 

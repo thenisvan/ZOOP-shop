@@ -27,7 +27,6 @@ public abstract class Person {
     public String getPass() {
         return pass;
     }
-
     public void setFirstName(String fName) {
         this.fName = fName;
     }

@@ -2,12 +2,9 @@ package Helper;
 
 import java.util.concurrent.TimeUnit;
 
-public class UIHelper {
-    /*
-     * @param seconds {How long the message will show.}
-     * @param message {Message to be displayed.}
-     */
-    public static void sleep(long seconds, String message) {
+public class Output_STD_functions {
+
+    public static void sleep(long sec, String m) {
         try {
             System.out.printf("""
                                             
@@ -15,16 +12,13 @@ public class UIHelper {
                     %s
                     ---------------------------------------------------
                                         
-                    """, message);
-            TimeUnit.SECONDS.sleep(seconds);
+                    """, m);
+            TimeUnit.SECONDS.sleep(sec);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
-    // ? I made this a method here because I don't want to redundantly type the code
-    // ? in one place.
-    public static void loginSuccess() {
+    public static void postLogin() {
         sleep(2, "Login success! Redirecting you to your dashboard...");
     }
 }

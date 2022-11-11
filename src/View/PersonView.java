@@ -1,8 +1,7 @@
 package View;
 
-import Helper.UIHelper;
-import Helper.ValidationHelper;
-import Model.Customer;
+import Helper.Output_STD_functions;
+import Helper.UserInput.InputChecker;
 import Model.Product;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class PersonView extends BasicView {
 //    }
 
     public void viewMyCart(List<Product> customerCart) {
-        if (ValidationHelper.isCartEmpty(customerCart)) return;
+        if (InputChecker.isCartEmpty(customerCart)) return;
 
         System.out.println("\n** YOUR CART **");
         customerCart.forEach(cart -> {
@@ -44,14 +43,14 @@ public class PersonView extends BasicView {
                     Product name: %s
                     Product price: %.1f
                     Quantity: %d
-                    """, cart.getProductName(), cart.getProductPrice(), cart.getBOUGHT_QUANTITY());
+                    """, cart.getProductName(), cart.getProductPrice(), cart.getAmount_toBuy());
             System.out.println("+++++++++++++++++++++++++++++");
         });
     }
 
     public void viewMyBoughtProducts(List<Product> boughtProducts) {
         if (boughtProducts.size() == 0) {
-            UIHelper.sleep(1, "You haven't bought any products!");
+            Output_STD_functions.sleep(1, "You haven't bought any products!");
             return;
         }
 
@@ -62,7 +61,7 @@ public class PersonView extends BasicView {
                     Product name: %s
                     Product price: %.1f
                     Bought Quantity: %d
-                    """, boughtProduct.getProductName(), boughtProduct.getProductPrice(), boughtProduct.getBOUGHT_QUANTITY());
+                    """, boughtProduct.getProductName(), boughtProduct.getProductPrice(), boughtProduct.getAmount_toBuy());
             System.out.println("+++++++++++++++++++++++++++++");
         });
     }
