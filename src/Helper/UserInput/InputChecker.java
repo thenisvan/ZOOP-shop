@@ -2,7 +2,7 @@ package Helper.UserInput;
 
 import Helper.Output_STD_functions;
 import Model.Buyer;
-import Model.Product;
+import Model.Item;
 
 import java.util.List;
 
@@ -32,7 +32,6 @@ public class InputChecker {
     public static boolean containLetter(String input) {
         if (input.matches("[A-Za-z]*")) {
             System.out.println("""
-                                            
                     |+++++++++++++++++++++++++++++++++++|
                     |*   Please enter numbers only!!   *|
                     |+++++++++++++++++++++++++++++++++++|
@@ -44,7 +43,6 @@ public class InputChecker {
 
     public static void printNumberFormatExceptionMessage() {
         System.out.println("""
-                                
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 |*   Please enter the appropriate type!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
@@ -72,10 +70,10 @@ public class InputChecker {
         return result;
     }
 
-    public static boolean isCartEmpty(List<Product> products) {
+    public static boolean isCartEmpty(List<Item> items) {
         boolean result = false;
 
-        if (products.size() == 0) {
+        if (items.size() == 0) {
             Output_STD_functions.sleep(1, "Your cart is empty!");
             result = true;
         }

@@ -1,18 +1,28 @@
 package Model;
 
+import Helper.Output_STD_functions;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Person {
     private String fName, lName, uname, pass;
 
-    public static final List<Product> inventory = new ArrayList<>();
+    public static final List<Item> inventory = new ArrayList<>();
 
     public Person(String f, String l, String u, String p) {
         this.fName = f;
         this.lName = l;
         this.uname = u;
         this.pass = p;
+    }
+    public void printInfo() {
+        System.out.printf("""
+                ---------------------------------
+                | Name: %s %s |
+                | Username: %s |
+                ----------------------------------
+                """, this.fName, this.lName, this.uname);
     }
 
     public String getFirstName() {

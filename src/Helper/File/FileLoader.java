@@ -2,17 +2,17 @@ package Helper.File;
 
 import Model.BuyProcess;
 import Model.Buyer;
-import Model.shopOwner;
-import Model.Product;
+import Model.Item;
+import Model.Admin;
 
 import java.io.*;
 import java.util.List;
 import java.util.logging.FileHandler;
 
 public class FileLoader extends FileHandler {
-     private static final List<Buyer> buyers = shopOwner.buyers;
-    private static final List<Product> products = shopOwner.inventory;
-    private static final List<BuyProcess> moneyMovementsList = shopOwner.movements;
+     private static final List<Buyer> buyers = Admin.buyers;
+    private static final List<Item> ITEMS = Admin.inventory;
+    private static final List<BuyProcess> moneyMovementsList = Admin.movements;
 
     public FileLoader() throws IOException, SecurityException {}
 
@@ -52,8 +52,8 @@ public class FileLoader extends FileHandler {
                 String[] data = line.split(",");
 
                 //? Makes a product based on the data to imitate loading from database.
-                Product product = new Product(data[0], Double.parseDouble(data[1]), Integer.parseInt(data[2]));
-                products.add(product);
+                Item item = new Item(data[0], Double.parseDouble(data[1]), Integer.parseInt(data[2]));
+                ITEMS.add(item);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class FileLoader extends FileHandler {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(TRANSACTIONS_CSV))) {
             String line;
             Buyer buyer = null;
-            Product product = null;
+            Item item = null;
 
             String header = bufferedReader.readLine(); // eats the header
             if (header == null) return;
@@ -82,19 +82,19 @@ public class FileLoader extends FileHandler {
                     if (c.getFirstName().equals(customerName)) buyer = c;
                 }
 
-                for (Product p : products) {
-                    if (p.getProductName().equals(productName)) product = p;
+                for (Item p : ITEMS) {
+                    if (p.getProductName().equals(productName)) item = p;
                 }
 
-                if (buyer == null || product == null) return;
+                if (buyer == null || item == null) return;
 
                 //? Makes a transaction based on the data to imitate loading from database.
-                moneyMovementsList.add(new BuyProcess(buyer, product));
+                moneyMovementsList.add(new BuyProcess(buyer, item));
 
-                product.setAmount_toBuy(Integer.valueOf(data[3]));
+                item.setAmount_toBuy(Integer.valueOf(data[3]));
 
-                List<Product> CUSTOMER_BOUGHT_PRODUCTS = buyer.getBoughtProducts();
-                CUSTOMER_BOUGHT_PRODUCTS.add(product);
+                List<Item> CUSTOMER_BOUGHT_Items = buyer.getBoughtProducts();
+                CUSTOMER_BOUGHT_Items.add(item);
             }
 
 
@@ -109,8 +109,8 @@ public class FileLoader extends FileHandler {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CUSTOMER_CART_CSV))) {
             String line;
             Buyer buyer = null;
-            List<Product> customerCart = null;
-            Product product = null;
+            List<Item> customerCart = null;
+            Item item = null;
 
             String header = bufferedReader.readLine(); // eats the header
             if (header == null) return;
@@ -128,17 +128,17 @@ public class FileLoader extends FileHandler {
                     }
                 }
 
-                for (Product p : products) {
-                    if (p.getProductName().equals(productName)) product = p;
+                for (Item p : ITEMS) {
+                    if (p.getProductName().equals(productName)) item = p;
                 }
 
-                if (buyer == null || product == null || customerCart == null) return;
+                if (buyer == null || item == null || customerCart == null) return;
 
                 //? Makes a product and store to the customerCart based on the data to imitate loading from database.
-                Product loadedProduct = new Product(productName, Double.parseDouble(data[2]), product.getProductQuantity());
+                Item loadedItem = new Item(productName, Double.parseDouble(data[2]), item.getProductQuantity());
 
-                loadedProduct.setAmount_toBuy(Integer.valueOf(data[3]));
-                customerCart.add(loadedProduct);
+                loadedItem.setAmount_toBuy(Integer.valueOf(data[3]));
+                customerCart.add(loadedItem);
             }
 
 

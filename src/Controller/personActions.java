@@ -1,11 +1,12 @@
 package Controller;
 
+import Helper.Banners;
 import Helper.File.fileHandler;
 import Helper.Output_STD_functions;
 import Helper.UserInput.InputChecker;
 import Model.Buyer;
-import Model.shopOwner;
-import Model.Product;
+import Model.Item;
+import Model.Admin;
 import Model.BuyProcess;
 import View.PersonView;
 
@@ -14,10 +15,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class personActions {
-    private static final List<Product> InventoryProducts_Shop = shopOwner.inventory;
-    private static final List<BuyProcess> moneyMovements = shopOwner.movements;
-    private final List<Product> productsOnCard;
-    private final List<Product> customerInventory;
+    private static final List<Item> INVENTORY_PRODUCTS___SHOP = Admin.inventory;
+    private static final List<BuyProcess> moneyMovements = Admin.movements;
+    private final List<Item> productsOnCard;
+    private final List<Item> customerInventory;
     private final Scanner uInput = new Scanner(System.in);
     private final Buyer buyer;
     private final PersonView personView = new PersonView();
@@ -30,6 +31,7 @@ public class personActions {
 
     public void chooseFromDashboard() {
         while (true) {
+            Banners.printRandomPersonBanner();
             personView.showDashboard();
             String input = uInput.nextLine();
 
@@ -38,6 +40,7 @@ public class personActions {
             int choice = Integer.parseInt(input);
 
             switch (choice) {
+                case 0 -> buyer.printInfo();
                 case 1 -> cashIn();
                 case 2 -> goShopping();
                 case 3 -> personView.showUserInfo(buyer);
@@ -78,10 +81,10 @@ public class personActions {
     }
 
     private void goShopping() {
-        Product chosenProduct;
+        Item chosenItem;
 
         //?  This is for java to immediately exit the method if there are no products.
-        if (InventoryProducts_Shop.size() == 0) {
+        if (INVENTORY_PRODUCTS___SHOP.size() == 0) {
             Output_STD_functions.sleep(1, "No Available products as of now!");
             return;
         }
@@ -95,23 +98,23 @@ public class personActions {
                 """);
 
         int i = 0;
-        for (Product product : InventoryProducts_Shop) {
-            if (product.getProductQuantity() == 0) continue;
+        for (Item item : INVENTORY_PRODUCTS___SHOP) {
+            if (item.getProductQuantity() == 0) continue;
 
             System.out.println("----------------------------");
             System.out.printf("""
-                    product number: %d
-                    product name: %s
+                    item number: %d
+                    item name: %s
                     price: %.1f
                     quantity: %d
-                    """, i, product.getProductName(), product.getProductPrice(), product.getProductQuantity());
+                    """, i, item.getProductName(), item.getProductPrice(), item.getProductQuantity());
             System.out.println("----------------------------");
             i++;
         }
         try {
-            System.out.print("\nEnter the product number: ");
+            System.out.print("\nEnter the item number: ");
             int productNumber = Integer.parseInt(uInput.nextLine());
-            chosenProduct = InventoryProducts_Shop.get(productNumber);
+            chosenItem = INVENTORY_PRODUCTS___SHOP.get(productNumber);
 
             System.out.println("""
                     \nDo you want to add to cart or buy now?
@@ -121,8 +124,8 @@ public class personActions {
 
             int choice = Integer.parseInt(uInput.nextLine());
 
-            if (choice == 1) addToCart(chosenProduct);
-            else if (choice == 2) buyNow(chosenProduct);
+            if (choice == 1) addToCart(chosenItem);
+            else if (choice == 2) buyNow(chosenItem);
             else {
                 InputChecker.printIndexOutOfBoundsExceptionMessage();
                 goShopping();
@@ -136,29 +139,29 @@ public class personActions {
         }
     }
 
-    private void addToCart(Product chosenProduct) {
+    private void addToCart(Item chosenItem) {
         try {
             System.out.print("Enter quantity: ");
             int qty = Integer.parseInt(uInput.nextLine());
-            chosenProduct.setAmount_toBuy(qty);
+            chosenItem.setAmount_toBuy(qty);
 
-            if (qty > chosenProduct.getProductQuantity()) {
+            if (qty > chosenItem.getProductQuantity()) {
                 Output_STD_functions.sleep(1, "We don't have enough stock for that quantity!");
                 return;
             }
 
-            // ? sets the new quantity of that product
-            chosenProduct.setProductQuantity(chosenProduct.getProductQuantity() - qty);
+            // ? sets the new quantity of that item
+            chosenItem.setProductQuantity(chosenItem.getProductQuantity() - qty);
 
-            // ? make and write the file to where that product will be stored.
+            // ? make and write the file to where that item will be stored.
             fileHandler.makeFile("src/CSV/customerCart.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
-            fileHandler.writeToFile(new File("src/CSV/customerCart.csv"), String.format("%s,%s,%.1f,%d\n", buyer.getFirstName(), chosenProduct.getProductName(), chosenProduct.getProductPrice(), chosenProduct.getAmount_toBuy()));
+            fileHandler.writeToFile(new File("src/CSV/customerCart.csv"), String.format("%s,%s,%.1f,%d\n", buyer.getFirstName(), chosenItem.getProductName(), chosenItem.getProductPrice(), chosenItem.getAmount_toBuy()));
 
-            productsOnCard.add(chosenProduct);
+            productsOnCard.add(chosenItem);
 
         } catch (NumberFormatException e) {
             InputChecker.printNumberFormatExceptionMessage();
-            addToCart(chosenProduct);
+            addToCart(chosenItem);
         }
     }
 
@@ -169,28 +172,28 @@ public class personActions {
         productsOnCard.clear();
     }
 
-    private void buyNow(Product chosenProduct) {
+    private void buyNow(Item chosenItem) {
         System.out.print("\nEnter quantity: ");
         int qty = Integer.parseInt(uInput.nextLine());
-        chosenProduct.setAmount_toBuy(qty);
+        chosenItem.setAmount_toBuy(qty);
 
         //? This is for when the user input 0 , we set it to 1 to avoid multiplying to 0
         if (qty == 0) qty = 1;
-        if (qty > chosenProduct.getProductQuantity()) {
+        if (qty > chosenItem.getProductQuantity()) {
             Output_STD_functions.sleep(1, "We don't have enough stock for that quantity!");
             return;
         }
 
-        BuyProcess buyProcess = new BuyProcess(buyer, chosenProduct);
+        BuyProcess buyProcess = new BuyProcess(buyer, chosenItem);
         MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
         //  if transaction failed
         if (!moneyMovementActions.startTransaction()) return;
 
         moneyMovements.add(buyProcess);
-        customerInventory.add(chosenProduct);
+        customerInventory.add(chosenItem);
 
-        ProductActions productActions = new ProductActions(chosenProduct);
+        ProductActions productActions = new ProductActions(chosenItem);
         productActions.updateProductQuantity(qty);
         productActions.updateProduct();
 
@@ -208,12 +211,12 @@ public class personActions {
         }
 
         // ? This totals the products from the customer cart
-        for (Product product : productsOnCard) {
-            if (product.getProductQuantity() <= 0) {
-                Output_STD_functions.sleep(1, "No stocks for " + product.getProductName());
+        for (Item item : productsOnCard) {
+            if (item.getProductQuantity() <= 0) {
+                Output_STD_functions.sleep(1, "No stocks for " + item.getProductName());
                 return;
             }
-            totalPrice += product.getProductPrice() * product.getAmount_toBuy();
+            totalPrice += item.getProductPrice() * item.getAmount_toBuy();
         }
 
         if (buyer.getBalance() < totalPrice) {
@@ -222,8 +225,8 @@ public class personActions {
         }
 
         // ? Loops throughout the customerCart and make transactions in each of the products
-        for (Product product : productsOnCard) {
-            BuyProcess buyProcess = new BuyProcess(buyer, product);
+        for (Item item : productsOnCard) {
+            BuyProcess buyProcess = new BuyProcess(buyer, item);
             MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
             Output_STD_functions.sleep(2, "Processing your request..");
@@ -231,9 +234,9 @@ public class personActions {
 
 
             moneyMovements.add(buyProcess);
-            customerInventory.add(product);
+            customerInventory.add(item);
 
-            ProductActions productActions = new ProductActions(product);
+            ProductActions productActions = new ProductActions(item);
             productActions.updateProduct();
 
             fileHandler.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");

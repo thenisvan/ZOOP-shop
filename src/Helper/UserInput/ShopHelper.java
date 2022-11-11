@@ -5,8 +5,9 @@ import Controller.adminControl;
 import Helper.File.fileHandler;
 import Helper.Output_STD_functions;
 import Model.Buyer;
-import Model.shopOwner;
-import Model.Product;
+import Model.Item;
+import Model.Admin;
+import Helper.Banners;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,8 +16,8 @@ import java.util.Scanner;
 
 public class ShopHelper {
     private static final Scanner SCAN = new Scanner(System.in);
-    private static final List<Buyer> CUSTOMERS_LIST = shopOwner.buyers;
-    private static final List<Product> PRODUCT_LIST = shopOwner.inventory;
+    private static final List<Buyer> CUSTOMERS_LIST = Admin.buyers;
+    private static final List<Item> ITEM_LIST = Admin.inventory;
     private static final File ACCOUNTS_CSV = new File("src/CSV/accounts.csv");
     private static final File PRODUCTS_CSV = new File("src/CSV/products.csv");
     private static final File TRANSACTION_CSV = new File("src/CSV/transactions.csv");
@@ -27,9 +28,9 @@ public class ShopHelper {
         loadFiles();
 
         while (true) {
+            Banners.printRandomShopBanner();
             System.out.println("""
                                         
-                    Welcome! (Always exit here in option 3!)
                     1 -> Login
                     2 -> Register
                     3 -> Exit
@@ -71,14 +72,15 @@ public class ShopHelper {
             fileHandler.writeToFile(ACCOUNTS_CSV, buyer + "\n");
         }
 
-        for (Product product : PRODUCT_LIST) {
-            if (product.getProductQuantity() != 0) {
-                fileHandler.writeToFile(PRODUCTS_CSV, product + "\n");
+        for (Item item : ITEM_LIST) {
+            if (item.getProductQuantity() != 0) {
+                fileHandler.writeToFile(PRODUCTS_CSV, item + "\n");
             }
         }
     }
 
     private static void login() {
+        Banners.printRandomLoginBanner();
         System.out.print("\nEnter your username: ");
         String username = SCAN.nextLine();
 
@@ -111,6 +113,8 @@ public class ShopHelper {
     }
 
     private static void register() {
+        Banners.printRandomRegisterBanner();
+
         System.out.print("\nEnter your first name: ");
         String firstName = SCAN.nextLine();
 

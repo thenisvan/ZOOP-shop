@@ -1,25 +1,25 @@
 package Controller;
 
-import Model.shopOwner;
-import Model.Product;
+import Model.Admin;
+import Model.Item;
 
 import java.util.List;
 
 public class ProductActions {
-    private final Product product;
-    private final List<Product> productList = shopOwner.inventory;
+    private final Item item;
+    private final List<Item> itemList = Admin.inventory;
 
-    public ProductActions(Product product) {
-        this.product = product;
+    public ProductActions(Item item) {
+        this.item = item;
     }
 
     public void updateProductQuantity(int bought) {
-        product.setProductQuantity(product.getProductQuantity() - bought);
+        item.setProductQuantity(item.getProductQuantity() - bought);
     }
 
     public void updateProduct() {
-        if (product.getProductQuantity() == 0) {
-            productList.remove(product);
+        if (item.getProductQuantity() == 0) {
+            itemList.remove(item);
         }
     }
 }

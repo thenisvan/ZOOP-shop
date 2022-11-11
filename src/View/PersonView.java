@@ -2,7 +2,7 @@ package View;
 
 import Helper.Output_STD_functions;
 import Helper.UserInput.InputChecker;
-import Model.Product;
+import Model.Item;
 
 import java.util.List;
 
@@ -10,15 +10,16 @@ public class PersonView extends BasicView {
     public void showDashboard() {
         System.out.println("""
                 What do you want to do?
-                1 -> Cash in
-                2 -> Go shopping (can add to cart or buy)
-                3 -> View Info
-                4 -> View balance
-                5 -> View my cart
-                6 -> Clear my cart
-                7 -> Checkout
-                8 -> View my bought products
-                9 -> Logout
+                0.) Print All My Information
+                1.) Add Money to account
+                2.) Go shoppin'
+                3.) View basic Info
+                4.) View My Balance
+                5.) View Items On Card
+                6.) Delete Card Items
+                7.) Buy items on Card
+                8.) View my inventory
+                9.) Logout
                 """);
         System.out.print("#: ");
     }
@@ -33,7 +34,7 @@ public class PersonView extends BasicView {
 //        UIHelper.sleep(1, "Balance: P" + customer.getBalance());
 //    }
 
-    public void viewMyCart(List<Product> customerCart) {
+    public void viewMyCart(List<Item> customerCart) {
         if (InputChecker.isCartEmpty(customerCart)) return;
 
         System.out.println("\n** YOUR CART **");
@@ -44,25 +45,25 @@ public class PersonView extends BasicView {
                     Product price: %.1f
                     Quantity: %d
                     """, cart.getProductName(), cart.getProductPrice(), cart.getAmount_toBuy());
-            System.out.println("+++++++++++++++++++++++++++++");
+            System.out.println("\n+++++++++++++++++++++++++++++");
         });
     }
 
-    public void viewMyBoughtProducts(List<Product> boughtProducts) {
-        if (boughtProducts.size() == 0) {
-            Output_STD_functions.sleep(1, "You haven't bought any products!");
+    public void viewMyBoughtProducts(List<Item> boughtItems) {
+        if (boughtItems.size() == 0) {
+            Output_STD_functions.sleep(1, "You haven't bought any items!");
             return;
         }
 
         System.out.println("\n** Your Bought Products **");
-        boughtProducts.forEach(boughtProduct -> {
+        boughtItems.forEach(boughtProduct -> {
             System.out.println("\n+++++++++++++++++++++++++++++");
             System.out.printf("""
                     Product name: %s
                     Product price: %.1f
                     Bought Quantity: %d
                     """, boughtProduct.getProductName(), boughtProduct.getProductPrice(), boughtProduct.getAmount_toBuy());
-            System.out.println("+++++++++++++++++++++++++++++");
+            System.out.println("\n+++++++++++++++++++++++++++++");
         });
     }
 }

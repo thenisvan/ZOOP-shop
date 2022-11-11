@@ -1,12 +1,12 @@
 package Model;
 
-public class Product {
+public class Item {
     private final String productName;
     private final Double productPrice;
     private Integer amount_available;
     private Integer amount_toBuy;
 
-    public Product(String productName, Double productPrice, Integer productQuantity) {
+    public Item(String productName, Double productPrice, Integer productQuantity) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.amount_available = productQuantity;

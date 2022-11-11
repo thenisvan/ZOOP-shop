@@ -2,28 +2,28 @@ package Model;
 
 public class BuyProcess {
     private final Buyer buyer;
-    private final Product product;
+    private final Item item;
 
-    public BuyProcess(Buyer c, Product p) {
+    public BuyProcess(Buyer c, Item p) {
         this.buyer = c;
-        this.product = p;
+        this.item = p;
     }
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), product.getProductName(), product.getProductPrice(), product.getAmount_toBuy());
+        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), item.getProductName(), item.getProductPrice(), item.getAmount_toBuy());
     }
 
     public String showInfo() {
-        return product.getProductQuantity() + "x of " + product.getProductName();
+        return item.getProductQuantity() + "x of " + item.getProductName();
     }
 
     public Buyer getBuyer() {
         return buyer;
     }
 
-    public Product getProduct() {
-        return product;
+    public Item getProduct() {
+        return item;
     }
 
 }
