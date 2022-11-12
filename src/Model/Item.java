@@ -14,7 +14,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("%s,%.1f,%d", getProductName(), getProductPrice(), getProductQuantity());
+        return String.format("%s,%.2f,%d", getProductName(), getProductPrice(), getProductQuantity());
     }
 
     public String getProductName() {

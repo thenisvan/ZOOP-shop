@@ -6,7 +6,7 @@ import Model.Item;
 
 import java.util.List;
 
-public class stdInCheck {
+public class shopChecker {
     public static boolean isInputInvalid(String... params) {
         boolean result = false;
 

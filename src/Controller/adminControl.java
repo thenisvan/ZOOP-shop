@@ -2,7 +2,7 @@ package Controller;
 
 import Helper.Banners;
 import Utils.SOUT_utils;
-import Helper.UserInput.stdInCheck;
+import Helper.UserInput.shopChecker;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -27,7 +27,7 @@ public class adminControl {
 
 //            Check if our input contains Alpha symbol
 //            We can check it by regex using static function from InputChecker
-            if (stdInCheck.containLetter(uIn)) continue;
+            if (shopChecker.containLetter(uIn)) continue;
 
 //            parse user answer
             int choice = Integer.parseInt(uIn);
@@ -61,20 +61,20 @@ public class adminControl {
 
             SOUT_utils.delayMessage(1, String.format("%d %ss was added!", pQuantity, pName));
         } catch (NumberFormatException e) {
-            stdInCheck.numFormatException();
+            shopChecker.numFormatException();
             addProduct();
         }
     }
 
     public void removeACustomer() {
-        if (!stdInCheck.hasCustomers(buyersList)) return;
+        if (!shopChecker.hasCustomers(buyersList)) return;
 
         adminView.showCustomerInfo(buyersList);
 
         System.out.print("Enter the customer first name: ");
         String customerName = uInput.nextLine();
 
-        if (stdInCheck.isInputInvalid(customerName)) return;
+        if (shopChecker.isInputInvalid(customerName)) return;
 
         for (Buyer buyer : buyersList) {
             if (buyer.getFirstName().equals(customerName)) {

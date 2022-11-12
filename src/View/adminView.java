@@ -1,17 +1,16 @@
 package View;
 
 import Utils.SOUT_utils;
-import Helper.UserInput.stdInCheck;
+import Helper.UserInput.shopChecker;
 import Model.Buyer;
 import Model.Item;
 import Model.BuyProcess;
 
 import java.util.List;
 
-public class adminView extends BasicView{
+public class adminView extends BasicView {
     public void showDashboard() {
         System.out.println("""
-                \n
                 What do you want to do?
                 1.) Create new item
                 2.) Show Money Movements
@@ -24,26 +23,41 @@ public class adminView extends BasicView{
     }
 
     public void showMoneyMovement(List<BuyProcess> m) {
-        if (m.size() == 0) {
-            SOUT_utils.delayMessage(1, "No transactions for now!");
+        int size = m.size();
+
+        if (size == 0) {
+            SOUT_utils.delayMessage(1, "No transactions has been mate till now!");
             return;
         }
 
+        int[] i = {0};
+        System.out.println("╔═════════════════════════════════════════╗");
+        System.out.println("║            Money Movements              ║");
+        System.out.println("├─────────────────────────────────────────┤");
         m.forEach(transaction -> {
-            System.out.println("\n+++++++++++++++++++++++++++++");
-            System.out.println(transaction.getBuyer().getFirstName() + " " + transaction.getBuyer().getLastName() + " bought " + transaction.showInfo());
-            System.out.println("+++++++++++++++++++++++++++++\n");
+            System.out.print("│ " + transaction.getBuyer().getFirstName() + " " + transaction.getBuyer().getLastName() + " bought " + transaction.showInfo());
+            if (size != 1 && size != i[0] + 1) System.out.println("\n├─────────────────────────────────────────┤");
+            i[0]++;
         });
+        System.out.println("\n└─────────────────────────────────────────┘");
+
+
     }
 
-    public void showCustomerInfo(List<Buyer> c) {
-        if (!stdInCheck.hasCustomers(c)) return;
 
+    public void showCustomerInfo(List<Buyer> c) {
+        if (!shopChecker.hasCustomers(c)) return;
+        int size = c.size();
+        int[] i = {0};
+        System.out.println("\n╔═════════════════════════════════════════╗");
+        System.out.println("║             Customer's Info             ║");
+        System.out.println("├─────────────────────────────────────────┤");
         c.forEach(customer -> {
-            System.out.println("\n+++++++++++++++++++++++++++++");
-            System.out.printf("Firstname: %s\nLastname: %s", customer.getFirstName(), customer.getLastName());
+            System.out.printf("│ Firstname: %s\n│ Lastname: %s", customer.getFirstName(), customer.getLastName());
+            if (size != 1 && size != i[0] + 1) System.out.println("\n├─────────────────────────────────────────┤");
+            i[0]++;
         });
-            System.out.println("\n+++++++++++++++++++++++++++++");
+        System.out.println("\n└─────────────────────────────────────────┘");
     }
 
     public void showProducts(List<Item> p) {
@@ -52,10 +66,11 @@ public class adminView extends BasicView{
             return;
         }
 
+
         p.forEach(item -> {
-            System.out.println("\n+++++++++++++++++++++++++++++");
-            System.out.printf("Product name: %s\nProduct price: %.1f\nProduct quantity: %d", item.getProductName(), item.getProductPrice(), item.getProductQuantity());
+            System.out.println("\n┌──────────────────────────────────────────");
+            System.out.printf("│ Product name: %s\n│ Product price: %.1f\n│ Product quantity: %d\n", item.getProductName(), item.getProductPrice(), item.getProductQuantity());
         });
-            System.out.println("+++++++++++++++++++++++++++++");
+        System.out.println("└──────────────────────────────────────────");
     }
 }

@@ -1,9 +1,10 @@
 package Controller;
 
 import Helper.Banners;
-import Helper.File.fileHandler;
+import Helper.File.CSV_fileUpdater;
+import Helper.File.CSV_fileWriter;
 import Utils.SOUT_utils;
-import Helper.UserInput.stdInCheck;
+import Helper.UserInput.shopChecker;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -35,7 +36,7 @@ public class personActions {
             personView.showDashboard();
             String input = uInput.nextLine();
 
-            if (stdInCheck.containLetter(input)) continue;
+            if (shopChecker.containLetter(input)) continue;
 
             int choice = Integer.parseInt(input);
 
@@ -75,7 +76,7 @@ public class personActions {
             }
             // Code would reach here if the user input a numeric char.
         } catch (NumberFormatException e) {
-            stdInCheck.numFormatException();
+            shopChecker.numFormatException();
             cashIn();
         }
     }
@@ -127,14 +128,14 @@ public class personActions {
             if (choice == 1) addToCart(chosenItem);
             else if (choice == 2) buyNow(chosenItem);
             else {
-                stdInCheck.outOfRangeException();
+                shopChecker.outOfRangeException();
                 goShopping();
             }
         } catch (NumberFormatException e) {
-            stdInCheck.numFormatException();
+            shopChecker.numFormatException();
             goShopping();
         } catch (IndexOutOfBoundsException e) {
-            stdInCheck.outOfRangeException();
+            shopChecker.outOfRangeException();
             goShopping();
         }
     }
@@ -154,19 +155,19 @@ public class personActions {
             chosenItem.setProductQuantity(chosenItem.getProductQuantity() - qty);
 
             // ? make and write the file to where that item will be stored.
-            fileHandler.makeFile("src/CSV/customerCart.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
-            fileHandler.writeToFile(new File("src/CSV/customerCart.csv"), String.format("%s,%s,%.1f,%d\n", buyer.getFirstName(), chosenItem.getProductName(), chosenItem.getProductPrice(), chosenItem.getAmount_toBuy()));
+            CSV_fileWriter.makeFile("src/CSV/customerCart.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
+            CSV_fileWriter.writeToFile(new File("src/CSV/customerCart.csv"), String.format("%s,%s,%.1f,%d\n", buyer.getFirstName(), chosenItem.getProductName(), chosenItem.getProductPrice(), chosenItem.getAmount_toBuy()));
 
             productsOnCard.add(chosenItem);
 
         } catch (NumberFormatException e) {
-            stdInCheck.numFormatException();
+            shopChecker.numFormatException();
             addToCart(chosenItem);
         }
     }
 
     private void clearCart() {
-        if (stdInCheck.isCartEmpty(productsOnCard)) return;
+        if (shopChecker.isCartEmpty(productsOnCard)) return;
 
         SOUT_utils.delayMessage(1, "Cart successfully cleared!");
         productsOnCard.clear();
@@ -198,8 +199,8 @@ public class personActions {
         productActions.updateProduct();
 
         // ? This is for making/writing to transactionsCSV to load later when the program runs again
-        fileHandler.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
-        fileHandler.writeTransactions(buyProcess + "\n");
+        CSV_fileWriter.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+        CSV_fileWriter.writeTransactions(buyProcess + "\n");
     }
 
     private void checkOut() {
@@ -239,14 +240,14 @@ public class personActions {
             ProductActions productActions = new ProductActions(item);
             productActions.updateProduct();
 
-            fileHandler.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
-            fileHandler.writeTransactions(buyProcess + "\n");
+            CSV_fileWriter.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+            CSV_fileWriter.writeTransactions(buyProcess + "\n");
         }
 
         SOUT_utils.delayMessage(1, "Checkout done!");
 
         // ? Updates the file (customerCart.csv) by removing the customer who just checked out.
-        fileHandler.updateCustomerCartCSV(buyer.getFirstName());
+        CSV_fileUpdater.updateCustomerCartCSV(buyer.getFirstName());
         productsOnCard.clear();
     }
 }

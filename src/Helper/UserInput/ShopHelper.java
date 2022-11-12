@@ -2,7 +2,8 @@ package Helper.UserInput;
 
 import Controller.personActions;
 import Controller.adminControl;
-import Helper.File.fileHandler;
+import Helper.File.CSV_fileLoader;
+import Helper.File.CSV_fileWriter;
 import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
@@ -40,7 +41,7 @@ public class ShopHelper {
             // get input
             String uInput = ShopHelper.uInput.nextLine();
             // check input correction ( numeric <1,5> )
-            if (stdInCheck.containLetter(uInput)) continue;
+            if (shopChecker.containLetter(uInput)) continue;
             int choice = Integer.parseInt(uInput);
 
             switch (choice) {
@@ -58,26 +59,26 @@ public class ShopHelper {
     }
 
     private static void loadCSVs() {
-        fileHandler.loadAccounts(accountsFile);
-        fileHandler.loadProducts(productsFile);
-        fileHandler.loadCustomerCart(productsOnCardFile);
-        fileHandler.loadTransactions(moneyMovementsFile);
+        CSV_fileLoader.loadAccounts(accountsFile);
+        CSV_fileLoader.loadProducts(productsFile);
+        CSV_fileLoader.loadCustomerCart(productsOnCardFile);
+        CSV_fileLoader.loadTransactions(moneyMovementsFile);
     }
 
     private static void updateCSVs() {
         if (accountsFile.exists()) accountsFile.delete();
-        fileHandler.makeFile(accountsFile.toString(), "FirstName,LastName,Username,Password,Balance\n");
+        CSV_fileWriter.makeFile(accountsFile.toString(), "FirstName,LastName,Username,Password,Balance\n");
 
         if (productsFile.exists()) productsFile.delete();
-        fileHandler.makeFile(productsFile.toString(), "ProductName,ProductPrice,ProductQuantity\n");
+        CSV_fileWriter.makeFile(productsFile.toString(), "ProductName,ProductPrice,ProductQuantity\n");
 
         for (Buyer buyer : listOfBuyers) {
-            fileHandler.writeToFile(accountsFile, buyer + "\n");
+            CSV_fileWriter.writeToFile(accountsFile, buyer + "\n");
         }
 
         for (Item item : inventoryItems) {
             if (item.getProductQuantity() != 0) {
-                fileHandler.writeToFile(productsFile, item + "\n");
+                CSV_fileWriter.writeToFile(productsFile, item + "\n");
             }
         }
     }
@@ -94,7 +95,7 @@ public class ShopHelper {
 
 //        this is painfull check
 //        TODO: this needs to be handled correctly
-        if (stdInCheck.isInputInvalid(username, password)) return;
+        if (shopChecker.isInputInvalid(username, password)) return;
 
 //        TODO: implement proper login solution, not only string comparison
         if (username.equals("admin") && password.equals("pass")) {
@@ -129,7 +130,7 @@ public class ShopHelper {
         System.out.print("Password: ");
         String pass = uInput.nextLine();
 
-        if (stdInCheck.isInputInvalid(fName, lName, uName, pass)) return;
+        if (shopChecker.isInputInvalid(fName, lName, uName, pass)) return;
 
         SOUT_utils.delayMessage(1, String.format("User [%s] has been added !",uName));
         listOfBuyers.add(new Buyer(fName, lName, uName, pass));
