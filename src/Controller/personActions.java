@@ -3,7 +3,7 @@ package Controller;
 import Helper.Banners;
 import Helper.File.fileHandler;
 import Helper.Output_STD_functions;
-import Helper.UserInput.InputChecker;
+import Helper.UserInput.stdInCheck;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -35,7 +35,7 @@ public class personActions {
             personView.showDashboard();
             String input = uInput.nextLine();
 
-            if (InputChecker.containLetter(input)) continue;
+            if (stdInCheck.containLetter(input)) continue;
 
             int choice = Integer.parseInt(input);
 
@@ -75,7 +75,7 @@ public class personActions {
             }
             // Code would reach here if the user input a numeric char.
         } catch (NumberFormatException e) {
-            InputChecker.printNumberFormatExceptionMessage();
+            stdInCheck.printNumberFormatExceptionMessage();
             cashIn();
         }
     }
@@ -127,14 +127,14 @@ public class personActions {
             if (choice == 1) addToCart(chosenItem);
             else if (choice == 2) buyNow(chosenItem);
             else {
-                InputChecker.printIndexOutOfBoundsExceptionMessage();
+                stdInCheck.printIndexOutOfBoundsExceptionMessage();
                 goShopping();
             }
         } catch (NumberFormatException e) {
-            InputChecker.printNumberFormatExceptionMessage();
+            stdInCheck.printNumberFormatExceptionMessage();
             goShopping();
         } catch (IndexOutOfBoundsException e) {
-            InputChecker.printIndexOutOfBoundsExceptionMessage();
+            stdInCheck.printIndexOutOfBoundsExceptionMessage();
             goShopping();
         }
     }
@@ -160,13 +160,13 @@ public class personActions {
             productsOnCard.add(chosenItem);
 
         } catch (NumberFormatException e) {
-            InputChecker.printNumberFormatExceptionMessage();
+            stdInCheck.printNumberFormatExceptionMessage();
             addToCart(chosenItem);
         }
     }
 
     private void clearCart() {
-        if (InputChecker.isCartEmpty(productsOnCard)) return;
+        if (stdInCheck.isCartEmpty(productsOnCard)) return;
 
         Output_STD_functions.sleep(1, "Cart successfully cleared!");
         productsOnCard.clear();

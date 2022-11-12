@@ -19,7 +19,10 @@ public class ConsoleUtils {
     }
     catch (final Exception e)
     {
-        System.err.println(e.toString());
+        System.err.printf("Program rised an error [Cause: %s]\n", e.getMessage());
+//        Clear sout manually
+        for (int temp=0; temp<50; temp++) System.out.println();
+
     }
 }
 

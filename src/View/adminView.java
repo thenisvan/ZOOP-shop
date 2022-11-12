@@ -1,7 +1,7 @@
 package View;
 
 import Helper.Output_STD_functions;
-import Helper.UserInput.InputChecker;
+import Helper.UserInput.stdInCheck;
 import Model.Buyer;
 import Model.Item;
 import Model.BuyProcess;
@@ -37,7 +37,7 @@ public class adminView extends BasicView{
     }
 
     public void showCustomerInfo(List<Buyer> c) {
-        if (!InputChecker.hasCustomers(c)) return;
+        if (!stdInCheck.hasCustomers(c)) return;
 
         c.forEach(customer -> {
             System.out.println("\n+++++++++++++++++++++++++++++");

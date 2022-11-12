@@ -6,11 +6,7 @@ import Model.Item;
 
 import java.util.List;
 
-public class InputChecker {
-    /*
-     * @param params... {n number of params to be checked.}
-     * @return boolean {returns true if one of the params is null or empty.}
-     */
+public class stdInCheck {
     public static boolean isInputInvalid(String... params) {
         boolean result = false;
 
@@ -25,15 +21,11 @@ public class InputChecker {
         return result;
     }
 
-    /*
-     * @param input {User input to be checked.}
-     * @return boolean {returns true if the input has letters.}
-     */
-    public static boolean containLetter(String input) {
-        if (input.matches("[A-Za-z]*")) {
+    public static boolean containLetter(String i) {
+        if (i.matches("[A-Za-z]*")) {
             System.out.println("""
                     |+++++++++++++++++++++++++++++++++++|
-                    |*   Please enter numbers only!!   *|
+                    |*   Only Numbers Are Allowed !!   *|
                     |+++++++++++++++++++++++++++++++++++|
                     """);
             return true;
@@ -47,7 +39,7 @@ public class InputChecker {
                 |*   Please enter the appropriate type!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        Output_STD_functions.sleep(1, "Redirecting you back to the shop...");
+        Output_STD_functions.sleep(1, "Going back...");
     }
 
     public static void printIndexOutOfBoundsExceptionMessage() {

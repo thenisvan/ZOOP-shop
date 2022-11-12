@@ -1,7 +1,7 @@
 package View;
 
 import Helper.Output_STD_functions;
-import Helper.UserInput.InputChecker;
+import Helper.UserInput.stdInCheck;
 import Model.Item;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class PersonView extends BasicView {
 //    }
 
     public void viewMyCart(List<Item> customerCart) {
-        if (InputChecker.isCartEmpty(customerCart)) return;
+        if (stdInCheck.isCartEmpty(customerCart)) return;
 
         System.out.println("\n** YOUR CART **");
         customerCart.forEach(cart -> {
