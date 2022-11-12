@@ -1,6 +1,6 @@
 package View;
 
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Model.Buyer;
 
 public class BasicView {
@@ -22,7 +22,7 @@ public class BasicView {
     }
 
     public void showUserBalance(Buyer buyer) {
-        Output_STD_functions.sleep(1, "Balance: P" + buyer.getBalance());
+        SOUT_utils.sleep(1, "Balance: P" + buyer.getBalance());
     }
 
 }

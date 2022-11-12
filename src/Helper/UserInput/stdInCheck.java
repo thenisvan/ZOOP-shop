@@ -1,6 +1,6 @@
 package Helper.UserInput;
 
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
 
@@ -13,7 +13,7 @@ public class stdInCheck {
         for (String param : params) {
             if (param == null || param.trim().isEmpty()) {
                 result = true;
-                Output_STD_functions.sleep(1, "Please answer properly!");
+                SOUT_utils.sleep(1, "Please answer properly!");
                 break;
             }
         }
@@ -39,7 +39,7 @@ public class stdInCheck {
                 |*   Please enter the appropriate type!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        Output_STD_functions.sleep(1, "Going back...");
+        SOUT_utils.sleep(1, "Going back...");
     }
 
     public static void printIndexOutOfBoundsExceptionMessage() {
@@ -49,14 +49,14 @@ public class stdInCheck {
                 |*   Please input from the range only!!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        Output_STD_functions.sleep(1, "Redirecting you back to the shop...");
+        SOUT_utils.sleep(1, "Redirecting you back to the shop...");
     }
 
     public static boolean hasCustomers(List<Buyer> buyers) {
         boolean result = true;
 
         if (buyers.size() == 0) {
-            Output_STD_functions.sleep(1, "No customers for now!");
+            SOUT_utils.sleep(1, "No customers for now!");
             result = false;
         }
         return result;
@@ -66,7 +66,7 @@ public class stdInCheck {
         boolean result = false;
 
         if (items.size() == 0) {
-            Output_STD_functions.sleep(1, "Your cart is empty!");
+            SOUT_utils.sleep(1, "Your cart is empty!");
             result = true;
         }
         return result;

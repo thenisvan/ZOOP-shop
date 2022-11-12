@@ -1,7 +1,7 @@
 package Controller;
 
 import Helper.Banners;
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Helper.UserInput.stdInCheck;
 import Model.Buyer;
 import Model.Item;
@@ -41,7 +41,7 @@ public class adminControl {
                 case 6 -> {
                     return;
                 }
-                default -> Output_STD_functions.sleep(1, "Please enter from 1-6 only!");
+                default -> SOUT_utils.sleep(1, "Please enter from 1-6 only!");
             }
         }
     }
@@ -59,7 +59,7 @@ public class adminControl {
 
             shopInventory.add(new Item(pName, pPrice, pQuantity));
 
-            Output_STD_functions.sleep(1, String.format("%d %ss was added!", pQuantity, pName));
+            SOUT_utils.sleep(1, String.format("%d %ss was added!", pQuantity, pName));
         } catch (NumberFormatException e) {
             stdInCheck.printNumberFormatExceptionMessage();
             addProduct();
@@ -78,7 +78,7 @@ public class adminControl {
 
         for (Buyer buyer : buyersList) {
             if (buyer.getFirstName().equals(customerName)) {
-                Output_STD_functions.sleep(1, String.format("%s was successfully removed!", buyer.getFirstName()));
+                SOUT_utils.sleep(1, String.format("%s was successfully removed!", buyer.getFirstName()));
 
                 buyersList.remove(buyer);
                 return;

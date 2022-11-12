@@ -1,6 +1,6 @@
 package Controller;
 
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
 import Model.BuyProcess;
@@ -24,7 +24,7 @@ public class MoneyMovementActions {
         double newBalance = buyer.getBalance() - item.getProductPrice() * item.getAmount_toBuy();
         buyer.setBalance(newBalance);
 
-        Output_STD_functions.sleep(1, String.format("Success! your new balance is P%.1f", newBalance));
+        SOUT_utils.sleep(1, String.format("Success! your new balance is P%.1f", newBalance));
         return true;
     }
 }

@@ -3,7 +3,7 @@ package Helper.UserInput;
 import Controller.personActions;
 import Controller.adminControl;
 import Helper.File.fileHandler;
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -52,7 +52,7 @@ public class ShopHelper {
                     updateCSVs();
                     return;
                 }
-                default -> Output_STD_functions.sleep(1, "Please choose from 1-3 only!");
+                default -> SOUT_utils.sleep(1, "Please choose from 1-3 only!");
             }
         }
     }
@@ -132,7 +132,7 @@ public class ShopHelper {
 
         if (stdInCheck.isInputInvalid(firstName, lastName, username, password)) return;
 
-        Output_STD_functions.sleep(1, "Registration success!");
+        SOUT_utils.sleep(1, "Registration success!");
         listOfBuyers.add(new Buyer(firstName, lastName, username, password));
     }
 }

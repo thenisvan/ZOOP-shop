@@ -1,6 +1,6 @@
 package View;
 
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Helper.UserInput.stdInCheck;
 import Model.Buyer;
 import Model.Item;
@@ -25,7 +25,7 @@ public class adminView extends BasicView{
 
     public void showMoneyMovement(List<BuyProcess> m) {
         if (m.size() == 0) {
-            Output_STD_functions.sleep(1, "No transactions for now!");
+            SOUT_utils.sleep(1, "No transactions for now!");
             return;
         }
 
@@ -48,7 +48,7 @@ public class adminView extends BasicView{
 
     public void showProducts(List<Item> p) {
         if (p.size() == 0) {
-            Output_STD_functions.sleep(1, "You haven't add items yet!");
+            SOUT_utils.sleep(1, "You haven't add items yet!");
             return;
         }
 

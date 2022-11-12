@@ -2,7 +2,7 @@ package Controller;
 
 import Helper.Banners;
 import Helper.File.fileHandler;
-import Helper.Output_STD_functions;
+import Utils.SOUT_utils;
 import Helper.UserInput.stdInCheck;
 import Model.Buyer;
 import Model.Item;
@@ -67,10 +67,10 @@ public class personActions {
 
             // Calls the cashIn method again if the money was out of range.
             if (inputMoney < min || inputMoney > max) {
-                Output_STD_functions.sleep(1, "Out of range!");
+                SOUT_utils.sleep(1, "Out of range!");
                 cashIn();
             } else {
-                Output_STD_functions.sleep(1, String.format("Success! you cashed in P%.1f", inputMoney));
+                SOUT_utils.sleep(1, String.format("Success! you cashed in P%.1f", inputMoney));
                 buyer.setBalance(buyer.getBalance() + inputMoney);
             }
             // Code would reach here if the user input a numeric char.
@@ -85,7 +85,7 @@ public class personActions {
 
         //?  This is for java to immediately exit the method if there are no products.
         if (INVENTORY_PRODUCTS___SHOP.size() == 0) {
-            Output_STD_functions.sleep(1, "No Available products as of now!");
+            SOUT_utils.sleep(1, "No Available products as of now!");
             return;
         }
 
@@ -146,7 +146,7 @@ public class personActions {
             chosenItem.setAmount_toBuy(qty);
 
             if (qty > chosenItem.getProductQuantity()) {
-                Output_STD_functions.sleep(1, "We don't have enough stock for that quantity!");
+                SOUT_utils.sleep(1, "We don't have enough stock for that quantity!");
                 return;
             }
 
@@ -168,7 +168,7 @@ public class personActions {
     private void clearCart() {
         if (stdInCheck.isCartEmpty(productsOnCard)) return;
 
-        Output_STD_functions.sleep(1, "Cart successfully cleared!");
+        SOUT_utils.sleep(1, "Cart successfully cleared!");
         productsOnCard.clear();
     }
 
@@ -180,7 +180,7 @@ public class personActions {
         //? This is for when the user input 0 , we set it to 1 to avoid multiplying to 0
         if (qty == 0) qty = 1;
         if (qty > chosenItem.getProductQuantity()) {
-            Output_STD_functions.sleep(1, "We don't have enough stock for that quantity!");
+            SOUT_utils.sleep(1, "We don't have enough stock for that quantity!");
             return;
         }
 
@@ -206,21 +206,21 @@ public class personActions {
         int totalPrice = 0;
 
         if (productsOnCard.size() == 0) {
-            Output_STD_functions.sleep(1, "You have nothing in cart!");
+            SOUT_utils.sleep(1, "You have nothing in cart!");
             return;
         }
 
         // ? This totals the products from the customer cart
         for (Item item : productsOnCard) {
             if (item.getProductQuantity() <= 0) {
-                Output_STD_functions.sleep(1, "No stocks for " + item.getProductName());
+                SOUT_utils.sleep(1, "No stocks for " + item.getProductName());
                 return;
             }
             totalPrice += item.getProductPrice() * item.getAmount_toBuy();
         }
 
         if (buyer.getBalance() < totalPrice) {
-            Output_STD_functions.sleep(1, "You don't have enough money to pay for that!");
+            SOUT_utils.sleep(1, "You don't have enough money to pay for that!");
             return;
         }
 
@@ -229,7 +229,7 @@ public class personActions {
             BuyProcess buyProcess = new BuyProcess(buyer, item);
             MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
-            Output_STD_functions.sleep(2, "Processing your request..");
+            SOUT_utils.sleep(2, "Processing your request..");
             moneyMovementActions.startTransaction();
 
 
@@ -243,7 +243,7 @@ public class personActions {
             fileHandler.writeTransactions(buyProcess + "\n");
         }
 
-        Output_STD_functions.sleep(1, "Checkout done!");
+        SOUT_utils.sleep(1, "Checkout done!");
 
         // ? Updates the file (customerCart.csv) by removing the customer who just checked out.
         fileHandler.updateCustomerCartCSV(buyer.getFirstName());

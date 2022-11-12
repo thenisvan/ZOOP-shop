@@ -1,8 +1,8 @@
-package Helper;
+package Utils;
 
 import java.util.concurrent.TimeUnit;
 
-public class Output_STD_functions {
+public class SOUT_utils {
 
     public static void sleep(long sec, String m) {
         try {
