@@ -52,7 +52,7 @@ public class ShopHelper {
                     updateCSVs();
                     return;
                 }
-                default -> SOUT_utils.sleep(1, "Please choose from 1-3 only!");
+                default -> SOUT_utils.delayMessage(1, "Please choose from 1-3 only!");
             }
         }
     }
@@ -115,7 +115,7 @@ public class ShopHelper {
             }
         }
 
-        SOUT_utils.sleep(1, "No account found!");
+        SOUT_utils.delayMessage(1, "No account found!");
     }
 
     private static void signUp() {
@@ -135,7 +135,7 @@ public class ShopHelper {
 
         if (stdInCheck.isInputInvalid(firstName, lastName, username, password)) return;
 
-        SOUT_utils.sleep(1, "Registration success!");
+        SOUT_utils.delayMessage(1, "Registration success!");
         listOfBuyers.add(new Buyer(firstName, lastName, username, password));
     }
 }

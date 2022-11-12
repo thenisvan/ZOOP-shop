@@ -22,7 +22,7 @@ public class BasicView {
     }
 
     public void showUserBalance(Buyer buyer) {
-        SOUT_utils.sleep(1, "Balance: P" + buyer.getBalance());
+        SOUT_utils.delayMessage(1, "Balance: P" + buyer.getBalance());
     }
 
 }

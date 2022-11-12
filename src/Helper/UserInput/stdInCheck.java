@@ -13,7 +13,7 @@ public class stdInCheck {
         for (String param : params) {
             if (param == null || param.trim().isEmpty()) {
                 result = true;
-                SOUT_utils.sleep(1, "Please answer properly!");
+                SOUT_utils.delayMessage(1, "Please answer properly!");
                 break;
             }
         }
@@ -39,7 +39,7 @@ public class stdInCheck {
                 |*   Please enter the appropriate type!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        SOUT_utils.sleep(1, "Going back...");
+        SOUT_utils.delayMessage(1, "Going back...");
     }
 
     public static void printIndexOutOfBoundsExceptionMessage() {
@@ -49,14 +49,14 @@ public class stdInCheck {
                 |*   Please input from the range only!!!   *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        SOUT_utils.sleep(1, "Redirecting you back to the shop...");
+        SOUT_utils.delayMessage(1, "Redirecting you back to the shop...");
     }
 
     public static boolean hasCustomers(List<Buyer> buyers) {
         boolean result = true;
 
         if (buyers.size() == 0) {
-            SOUT_utils.sleep(1, "No customers for now!");
+            SOUT_utils.delayMessage(1, "No customers for now!");
             result = false;
         }
         return result;
@@ -66,7 +66,7 @@ public class stdInCheck {
         boolean result = false;
 
         if (items.size() == 0) {
-            SOUT_utils.sleep(1, "Your cart is empty!");
+            SOUT_utils.delayMessage(1, "Your cart is empty!");
             result = true;
         }
         return result;

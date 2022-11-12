@@ -51,7 +51,7 @@ public class PersonView extends BasicView {
 
     public void viewMyBoughtProducts(List<Item> boughtItems) {
         if (boughtItems.size() == 0) {
-            SOUT_utils.sleep(1, "You haven't bought any items!");
+            SOUT_utils.delayMessage(1, "You haven't bought any items!");
             return;
         }
 
