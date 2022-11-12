@@ -21,7 +21,7 @@ public class adminControl {
 
     public void chooseFromDashboard() {
         while (true) {
-            Banners.printRandomAdminBanner();
+            Banners.printRandomAdminBanner(false);
             adminView.showDashboard();
             String uIn = uInput.nextLine().trim(); // Remove whitespace from both sides of a string
 
@@ -61,7 +61,7 @@ public class adminControl {
 
             SOUT_utils.delayMessage(1, String.format("%d %ss was added!", pQuantity, pName));
         } catch (NumberFormatException e) {
-            stdInCheck.printNumberFormatExceptionMessage();
+            stdInCheck.numFormatException();
             addProduct();
         }
     }

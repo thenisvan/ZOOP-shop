@@ -7,11 +7,19 @@ public class SOUT_utils {
 
     public static void delayMessage(double sec, String m) {
         try {
+            String dashedStr = new String(new char[m.length()]).replace('\0', '─');
+            String spacedStr = new String(new char[m.length()-"Message".length()]).replace('\0', ' ');
             System.out.printf("""
-                    |++++++++++++++++++++++++++++++++++++++++++
-                    | %s
-                    |++++++++++++++++++++++++++++++++++++++++++
-                    """, m);
+┌────%s┐
+│    Message%s│
+├────%s┤
+│ %s   │
+└────%s┘
+
+                    """, dashedStr,spacedStr,dashedStr,m,dashedStr);
+//                    |++++++++++++++++++++++++++++++++++++++++++
+//                    | %s
+//                    |++++++++++++++++++++++++++++++++++++++++++
 //            TimeUnit.SECONDS.sleep(sec);
             TimeUnit.MILLISECONDS.sleep( (long) (sec*1000));
         } catch (InterruptedException e) {
@@ -19,6 +27,6 @@ public class SOUT_utils {
         }
     }
     public static void postLogin() {
-        delayMessage(1.5, "Woohaa, nice... Going To Dashboard");
+        delayMessage(1.5, "Woohaa, Login Successful");
     }
 }

@@ -30,7 +30,7 @@ public class ShopHelper {
 
         while (true) {
             // print SHOP Banneŕas it will look good
-            Banners.printRandomShopBanner();
+            Banners.printRandomShopBanner(false);
             System.out.println("1.) Log In");
             System.out.println("2.) Create Customer");
             System.out.println("3.) Load Files");
@@ -52,7 +52,7 @@ public class ShopHelper {
                     updateCSVs();
                     return;
                 }
-                default -> SOUT_utils.delayMessage(1, "Please choose from 1-3 only!");
+                default -> SOUT_utils.delayMessage(1, "\n Number is not from given range!");
             }
         }
     }
@@ -84,7 +84,7 @@ public class ShopHelper {
 
     private static void logIn() {
 //        Print nice and shiny banner
-        Banners.printRandomLoginBanner();
+        Banners.printRandomLoginBanner(true);
 //        ask for creds
         System.out.print("\nUserName: ");
         String username = uInput.nextLine();
@@ -119,23 +119,19 @@ public class ShopHelper {
     }
 
     private static void signUp() {
-        Banners.printRandomRegisterBanner();
+        Banners.printRandomRegisterBanner(true);
+        System.out.print("\nFirst name: ");
+        String fName = uInput.nextLine();
+        System.out.print("Last name: ");
+        String lName = uInput.nextLine();
+        System.out.print("Username: ");
+        String uName = uInput.nextLine();
+        System.out.print("Password: ");
+        String pass = uInput.nextLine();
 
-        System.out.print("\nEnter your first name: ");
-        String firstName = uInput.nextLine();
+        if (stdInCheck.isInputInvalid(fName, lName, uName, pass)) return;
 
-        System.out.print("Enter your last name: ");
-        String lastName = uInput.nextLine();
-
-        System.out.print("Enter your username: ");
-        String username = uInput.nextLine();
-
-        System.out.print("Enter your password: ");
-        String password = uInput.nextLine();
-
-        if (stdInCheck.isInputInvalid(firstName, lastName, username, password)) return;
-
-        SOUT_utils.delayMessage(1, "Registration success!");
-        listOfBuyers.add(new Buyer(firstName, lastName, username, password));
+        SOUT_utils.delayMessage(1, String.format("User [%s] has been added !",uName));
+        listOfBuyers.add(new Buyer(fName, lName, uName, pass));
     }
 }

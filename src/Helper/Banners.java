@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Banners {
 
-    public static void printRandomShopBanner() {
+    public static void printRandomShopBanner(boolean clearConsole) {
         ArrayList<String> l = new ArrayList<String>();
         l.add("""
                  ________  ________  ________  ________        ________  ___  ___  ________  ________   
@@ -61,12 +61,12 @@ public class Banners {
 
         Random r = new Random();
         String rBanner = l.get(r.nextInt(l.size()));
-        ConsoleUtils.clearConsole();
+        if (clearConsole)  ConsoleUtils.clearConsole() ;
         System.out.println(rBanner);
     }
 
 
-    public static void printRandomPersonBanner() {
+    public static void printRandomPersonBanner(boolean clearConsole) {
         ArrayList<String> l = new ArrayList<String>();
         l.add("""
                  
@@ -121,11 +121,11 @@ public class Banners {
 
         Random r = new Random();
         String rBanner = l.get(r.nextInt(l.size()));
-        ConsoleUtils.clearConsole();
+        if (clearConsole)  ConsoleUtils.clearConsole() ;
         System.out.println(rBanner);
     }
 
-    public static void printRandomAdminBanner() {
+    public static void printRandomAdminBanner(boolean clearConsole) {
         ArrayList<String> l = new ArrayList<String>();
         l.add("""
                              _           _       
@@ -206,11 +206,11 @@ public class Banners {
 
         Random r = new Random();
         String rBanner = l.get(r.nextInt(l.size()));
-        ConsoleUtils.clearConsole();
+        if (clearConsole)  ConsoleUtils.clearConsole() ;
         System.out.println(rBanner);
     }
 
-    public static void printRandomLoginBanner() {
+    public static void printRandomLoginBanner(boolean clearConsole) {
         ArrayList<String> l = new ArrayList<String>();
         l.add("""
                 $$\\                          $$\\           
@@ -224,14 +224,12 @@ public class Banners {
                                    $$\\   $$ |              
                                    \\$$$$$$  |              
                                     \\______/               
-
                                 """);
         l.add("""
                  __     __    ___  __  __ _ 
                 (  )   /  \\  / __)(  )(  ( \\
                 / (_/\\(  O )( (_ \\ )( /    /
                 \\____/ \\__/  \\___/(__)\\_)__)
-
                                 """);
         l.add("""
                 .____                 .__        
@@ -260,10 +258,11 @@ public class Banners {
 
         Random r = new Random();
         String rBanner = l.get(r.nextInt(l.size()));
+        if (clearConsole)  ConsoleUtils.clearConsole() ;
         System.out.println(rBanner);
     }
 
-    public static void printRandomRegisterBanner() {
+    public static void printRandomRegisterBanner(boolean clearConsole) {
         ArrayList<String> l = new ArrayList<String>();
         l.add("""
                 $$$$$$$\\                      $$\\             $$\\                         
@@ -313,7 +312,7 @@ public class Banners {
 
         Random r = new Random();
         String rBanner = l.get(r.nextInt(l.size()));
-        ConsoleUtils.clearConsole();
+        if (clearConsole)  ConsoleUtils.clearConsole() ;
         System.out.println(rBanner);
     }
 }

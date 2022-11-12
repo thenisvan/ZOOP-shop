@@ -13,7 +13,7 @@ public class stdInCheck {
         for (String param : params) {
             if (param == null || param.trim().isEmpty()) {
                 result = true;
-                SOUT_utils.delayMessage(1, "Please answer properly!");
+                SOUT_utils.delayMessage(1, "Please perform proper input!");
                 break;
             }
         }
@@ -22,41 +22,42 @@ public class stdInCheck {
     }
 
     public static boolean containLetter(String i) {
-        if (i.matches("[A-Za-z]*")) {
+        if (i.matches("[A-Za-z]*"))
+        {
             System.out.println("""
-                    |+++++++++++++++++++++++++++++++++++|
-                    |*   Only Numbers Are Allowed !!   *|
-                    |+++++++++++++++++++++++++++++++++++|
+                    |+++++++++++++++++++++++++++++++++++++++++++++++|
+                    |+   Your Input Contains Alpha Character  !!   +|
+                    |+++++++++++++++++++++++++++++++++++++++++++++++|
                     """);
             return true;
         }
         return false;
     }
 
-    public static void printNumberFormatExceptionMessage() {
+    public static void numFormatException() {
         System.out.println("""
                 |+++++++++++++++++++++++++++++++++++++++++++|
-                |*   Please enter the appropriate type!!   *|
+                |+        This Type Is Not Defined !!      +|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
         SOUT_utils.delayMessage(1, "Going back...");
     }
 
-    public static void printIndexOutOfBoundsExceptionMessage() {
+    public static void outOfRangeException() {
         System.out.println("""
                                 
                 |+++++++++++++++++++++++++++++++++++++++++++|
-                |*   Please input from the range only!!!   *|
+                |*        Undefined Number Range!!!        *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
-        SOUT_utils.delayMessage(1, "Redirecting you back to the shop...");
+        SOUT_utils.delayMessage(1, "Going back...");
     }
 
     public static boolean hasCustomers(List<Buyer> buyers) {
         boolean result = true;
 
         if (buyers.size() == 0) {
-            SOUT_utils.delayMessage(1, "No customers for now!");
+            SOUT_utils.delayMessage(1, "There are no buyers!");
             result = false;
         }
         return result;

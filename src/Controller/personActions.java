@@ -31,7 +31,7 @@ public class personActions {
 
     public void chooseFromDashboard() {
         while (true) {
-            Banners.printRandomPersonBanner();
+            Banners.printRandomPersonBanner(true);
             personView.showDashboard();
             String input = uInput.nextLine();
 
@@ -75,7 +75,7 @@ public class personActions {
             }
             // Code would reach here if the user input a numeric char.
         } catch (NumberFormatException e) {
-            stdInCheck.printNumberFormatExceptionMessage();
+            stdInCheck.numFormatException();
             cashIn();
         }
     }
@@ -127,14 +127,14 @@ public class personActions {
             if (choice == 1) addToCart(chosenItem);
             else if (choice == 2) buyNow(chosenItem);
             else {
-                stdInCheck.printIndexOutOfBoundsExceptionMessage();
+                stdInCheck.outOfRangeException();
                 goShopping();
             }
         } catch (NumberFormatException e) {
-            stdInCheck.printNumberFormatExceptionMessage();
+            stdInCheck.numFormatException();
             goShopping();
         } catch (IndexOutOfBoundsException e) {
-            stdInCheck.printIndexOutOfBoundsExceptionMessage();
+            stdInCheck.outOfRangeException();
             goShopping();
         }
     }
@@ -160,7 +160,7 @@ public class personActions {
             productsOnCard.add(chosenItem);
 
         } catch (NumberFormatException e) {
-            stdInCheck.printNumberFormatExceptionMessage();
+            stdInCheck.numFormatException();
             addToCart(chosenItem);
         }
     }
