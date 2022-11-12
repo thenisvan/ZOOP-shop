@@ -83,28 +83,31 @@ public class ShopHelper {
     }
 
     private static void logIn() {
+//        Print nice and shiny banner
         Banners.printRandomLoginBanner();
-        System.out.print("\nEnter your username: ");
+//        ask for creds
+        System.out.print("\nUserName: ");
         String username = uInput.nextLine();
-
-        System.out.print("Enter your password: ");
+        System.out.print("Password: ");
         String password = uInput.nextLine();
 
+
+//        this is painfull check
+//        TODO: this needs to be handled correctly
         if (stdInCheck.isInputInvalid(username, password)) return;
 
-//        TODO: implement proper login solution
-
+//        TODO: implement proper login solution, not only string comparison
         if (username.equals("admin") && password.equals("pass")) {
-            Output_STD_functions.postLogin();
+            SOUT_utils.postLogin();
 
             adminControl adminControl = new adminControl();
             adminControl.chooseFromDashboard();
             return;
         }
-
+//      Check login for additional Customers accounts
         for (Buyer buyer : ShopHelper.listOfBuyers) {
             if (buyer.getUsername().equals(username) && buyer.getPass().equals(password)) {
-                Output_STD_functions.postLogin();
+                SOUT_utils.postLogin();
 
                 personActions personActions = new personActions(buyer);
                 personActions.chooseFromDashboard();
@@ -112,7 +115,7 @@ public class ShopHelper {
             }
         }
 
-        Output_STD_functions.sleep(1, "No account found!");
+        SOUT_utils.sleep(1, "No account found!");
     }
 
     private static void signUp() {
