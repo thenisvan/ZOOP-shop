@@ -1,20 +1,20 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Buyer extends Person {
-    private final List<Item> shoppingCard = new ArrayList<>();
-    private final List<Item> inventory = new ArrayList<>();
+    private final ArrayList<Item> shoppingCard = new ArrayList<>();
+    private final ArrayList<Item> inventory = new ArrayList<>();
     private Double balance = 0.0;
 
     public Buyer(String firstName, String lastName, String username, String password) {
         super(firstName, lastName, username, password);
     }
 
+
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%.1f", this.getFirstName(), this.getLastName(), this.getUsername(), this.getPass(), this.getBalance());
+        return String.format("%s,%s,%s,%s,%.2f", this.getFirstName(), this.getLastName(), this.getUsername(), this.getPass(), this.getBalance());
     }
 
     @Override
@@ -44,11 +44,11 @@ public class Buyer extends Person {
         balance = newBalance;
     }
 
-    public List<Item> getMyCart() {
+    public ArrayList<Item> getMyCart() {
         return shoppingCard;
     }
 
-    public List<Item> getBoughtProducts() {
+    public ArrayList<Item> getOwnedItems() {
         return inventory;
     }
 }

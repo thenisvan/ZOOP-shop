@@ -11,11 +11,11 @@ public class BuyProcess {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), item.getProductName(), item.getProductPrice(), item.getAmount_toBuy());
+        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), item.getItemName(), item.getProductPrice(), item.getAmount_toBuy());
     }
 
     public String showInfo() {
-        return item.getProductQuantity() + "x of " + item.getProductName();
+        return item.getItemAmount() + "x of " + item.getItemName();
     }
 
     public Buyer getBuyer() {

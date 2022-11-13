@@ -13,12 +13,12 @@ public class ProductActions {
         this.item = item;
     }
 
-    public void updateProductQuantity(int bought) {
-        item.setProductQuantity(item.getProductQuantity() - bought);
+    public void updateItemAmount(int toBuy) {
+        item.setItemAmount(item.getItemAmount() - toBuy);
     }
 
-    public void updateProduct() {
-        if (item.getProductQuantity() == 0) {
+    public void updateItem() {
+        if (item.getItemAmount() == 0) {
             itemList.remove(item);
         }
     }

@@ -1,8 +1,8 @@
 package Controller;
 
-import Helper.Banners;
+import Utils.Banners;
 import Utils.SOUT_utils;
-import Helper.UserInput.shopChecker;
+import Utils.ShopUtils;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -13,11 +13,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class adminControl {
+    private final adminView adminView = new adminView();
+    private final Scanner uInput = new Scanner(System.in);
+//    lists
     private static final List<Buyer> buyersList = Admin.buyers;
     private final List<Item> shopInventory = Admin.inventory;
     private final List<BuyProcess> moneyMovementsList = Admin.movements;
-    private final adminView adminView = new adminView();
-    private final Scanner uInput = new Scanner(System.in);
 
     public void chooseFromDashboard() {
         while (true) {
@@ -27,7 +28,7 @@ public class adminControl {
 
 //            Check if our input contains Alpha symbol
 //            We can check it by regex using static function from InputChecker
-            if (shopChecker.containLetter(uIn)) continue;
+            if (ShopUtils.containLetter(uIn)) continue;
 
 //            parse user answer
             int choice = Integer.parseInt(uIn);
@@ -61,25 +62,24 @@ public class adminControl {
 
             SOUT_utils.delayMessage(1, String.format("%d %ss was added!", pQuantity, pName));
         } catch (NumberFormatException e) {
-            shopChecker.numFormatException();
+            ShopUtils.numFormatException();
             addProduct();
         }
     }
 
     public void removeACustomer() {
-        if (!shopChecker.hasCustomers(buyersList)) return;
+        if (!ShopUtils.hasBuyers(buyersList)) return;
 
         adminView.showCustomerInfo(buyersList);
 
         System.out.print("Enter the customer first name: ");
         String customerName = uInput.nextLine();
 
-        if (shopChecker.isInputInvalid(customerName)) return;
+        if (ShopUtils.isInputInvalid(customerName)) return;
 
         for (Buyer buyer : buyersList) {
             if (buyer.getFirstName().equals(customerName)) {
-                SOUT_utils.delayMessage(1, String.format("%s was successfully removed!", buyer.getFirstName()));
-
+                SOUT_utils.delayMessage(1, String.format("Buyer %s was successfully removed!", buyer.getFirstName()));
                 buyersList.remove(buyer);
                 return;
             }

@@ -1,6 +1,5 @@
 package Utils;
 
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 public class SOUT_utils {
@@ -23,7 +22,7 @@ public class SOUT_utils {
             throw new RuntimeException(e);
         }
     }
-    public static void postLogin() {
+    public static void afterLogIn() {
         delayMessage(1.5, "Woohaa, Login Successful");
     }
 }

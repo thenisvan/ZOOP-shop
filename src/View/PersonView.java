@@ -1,7 +1,7 @@
 package View;
 
 import Utils.SOUT_utils;
-import Helper.UserInput.shopChecker;
+import Utils.ShopUtils;
 import Model.Item;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class PersonView extends BasicView {
 //    }
 
     public void viewMyCart(List<Item> customerCart) {
-        if (shopChecker.isCartEmpty(customerCart)) return;
+        if (ShopUtils.isCartEmpty(customerCart)) return;
 
         System.out.println("\n** YOUR CART **");
         customerCart.forEach(cart -> {
@@ -44,7 +44,7 @@ public class PersonView extends BasicView {
                     Product name: %s
                     Product price: %.1f
                     Quantity: %d
-                    """, cart.getProductName(), cart.getProductPrice(), cart.getAmount_toBuy());
+                    """, cart.getItemName(), cart.getProductPrice(), cart.getAmount_toBuy());
             System.out.println("\n+++++++++++++++++++++++++++++");
         });
     }
@@ -62,7 +62,7 @@ public class PersonView extends BasicView {
                     Product name: %s
                     Product price: %.1f
                     Bought Quantity: %d
-                    """, boughtProduct.getProductName(), boughtProduct.getProductPrice(), boughtProduct.getAmount_toBuy());
+                    """, boughtProduct.getItemName(), boughtProduct.getProductPrice(), boughtProduct.getAmount_toBuy());
             System.out.println("\n+++++++++++++++++++++++++++++");
         });
     }

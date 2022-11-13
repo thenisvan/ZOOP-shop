@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class CSV_fileWriter extends CSV_fileHandler {
-        public static void writeToFile(File f, String ctx) {
+        public static void writeToCSV(File f, String ctx) {
         try ( FileWriter fw = new FileWriter(f, true ) ) {
             fw.append(ctx);
             fw.flush();
@@ -14,15 +14,12 @@ public class CSV_fileWriter extends CSV_fileHandler {
             e.printStackTrace();
         }
     }
+        public static void moneyMovementsWriter(String ctx) {
+        File f = new File("data/movements.csv");
 
-        public static void writeTransactions(String content) {
-        File file = new File("src/CSV/transactions.csv");
-
-        try (FileWriter writer = new FileWriter(file, true)) {
-            writer.append(content);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        try (FileWriter wr = new FileWriter(f, true)) {
+            wr.append(ctx);
+            wr.flush();
+        } catch (IOException ext) {ext.printStackTrace();}
     }
 }

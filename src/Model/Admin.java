@@ -1,12 +1,11 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Admin extends Person {
     //    public static final List<Product> inventory = new ArrayList<>();
-    public static final List<BuyProcess> movements = new ArrayList<>();
-    public static final List<Buyer> buyers = new ArrayList<>();
+    public static final ArrayList<BuyProcess> movements = new ArrayList<>();
+    public static final ArrayList<Buyer> buyers = new ArrayList<>();
 
 
     @Override
@@ -22,7 +21,7 @@ public class Admin extends Person {
         for (BuyProcess bp : movements) {
             System.out.printf("\t\t %s\n",bp.toString());
         }
-        System.out.println("| Customers:\n");
+        System.out.println("| Buyers:\n");
         for (Buyer b : buyers) {
             System.out.printf("\t\t %s\n",b.toString());
         }

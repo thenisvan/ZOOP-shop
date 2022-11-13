@@ -6,51 +6,54 @@ import Model.Admin;
 import Model.BuyProcess;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
-import static Helper.File.CSV_fileWriter.writeToFile;
+import static Helper.File.CSV_fileWriter.writeToCSV;
 
 public class CSV_fileHandler {
-    protected static final List<Buyer> listOfBuyers = Admin.buyers;
-    protected static final List<Item> inventoryItems = Admin.inventory;
-    protected static final List<BuyProcess> listOfMMovements = Admin.movements;
+    protected static final ArrayList<Buyer> listOfBuyers = Admin.buyers;
+    protected static final ArrayList<Item> inventoryItems = Admin.inventory;
+    protected static final ArrayList<BuyProcess> listOfMMovements = Admin.movements;
 
-    public static void makeFile(String path, String h) {
-        File file = new File(path);
+    public static void createCSV(String fPath, String toBeWritten) {
+        File file = new File(fPath);
 
         try {
-            if (new File("src/CSV").mkdir()) {
-                if (file.createNewFile()) writeToFile(file, h);
+            if (new File("data").mkdir()) {
+                if (file.createNewFile())
+                    writeToCSV(file, toBeWritten);
             } else {
-                if (file.createNewFile()) writeToFile(file, h);
+                if (file.createNewFile())
+                    writeToCSV(file, toBeWritten);
                 System.out.print("");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exc) {
+            exc.printStackTrace();
         }
     }
 
-    protected static void replaceFile(String pathOfOldFile, String pathOfNewFile) {
-        String sCurrentLine;
+    protected static void replaceFile(String old_filePath, String pathOfNewFile) {
+        String sCurrRiadok;
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(pathOfOldFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(pathOfNewFile));
+            BufferedReader buffReader = new BufferedReader(new FileReader(old_filePath));
+            BufferedWriter buffWriter = new BufferedWriter(new FileWriter(pathOfNewFile));
 
-            while ((sCurrentLine = br.readLine()) != null) {
-                bw.write(sCurrentLine);
-                bw.newLine();
+            while ( (sCurrRiadok = buffReader.readLine()) != null ) {
+                buffWriter.write(sCurrRiadok);
+                buffWriter.newLine();
             }
 
-            br.close();
-            bw.close();
+            buffWriter.close();
+            buffReader.close();
 
-            // delete the old file
-            File org = new File(pathOfOldFile);
-            org.delete();
+            // zmazanie stareho
+            File toBeDeleted = new File(old_filePath);
+            toBeDeleted.delete();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exc) {
+            exc.printStackTrace();
         }
     }
 }

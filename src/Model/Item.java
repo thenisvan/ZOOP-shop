@@ -14,10 +14,10 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("%s,%.2f,%d", getProductName(), getProductPrice(), getProductQuantity());
+        return String.format("%s,%.2f,%d", getItemName(), getProductPrice(), getItemAmount());
     }
 
-    public String getProductName() {
+    public String getItemName() {
         return productName;
     }
 
@@ -25,11 +25,11 @@ public class Item {
         return productPrice;
     }
 
-    public Integer getProductQuantity() {
+    public Integer getItemAmount() {
         return amount_available;
     }
 
-    public void setProductQuantity(Integer i) {
+    public void setItemAmount(Integer i) {
         amount_available = i;
     }
 
@@ -37,7 +37,7 @@ public class Item {
         return amount_toBuy;
     }
 
-    public void setAmount_toBuy(Integer amount_toBuy) {
+    public void kolkoKupit(Integer amount_toBuy) {
         this.amount_toBuy = amount_toBuy;
     }
 }

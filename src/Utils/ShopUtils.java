@@ -1,4 +1,4 @@
-package Helper.UserInput;
+package Utils;
 
 import Utils.SOUT_utils;
 import Model.Buyer;
@@ -6,19 +6,18 @@ import Model.Item;
 
 import java.util.List;
 
-public class shopChecker {
-    public static boolean isInputInvalid(String... params) {
-        boolean result = false;
+public class ShopUtils {
+    public static boolean isInputInvalid(String... strings) {
+        boolean flag = false;
 
-        for (String param : params) {
-            if (param == null || param.trim().isEmpty()) {
-                result = true;
-                SOUT_utils.delayMessage(1, "Please perform proper input!");
+        for (String str : strings) {
+            if (str == null || str.trim().isEmpty()) {
+                flag = true;
+                SOUT_utils.delayMessage(1, "Input is wrong!");
                 break;
             }
         }
-
-        return result;
+        return flag;
     }
 
     public static boolean containLetter(String i) {
@@ -26,7 +25,7 @@ public class shopChecker {
         {
             System.out.println("""
                     |+++++++++++++++++++++++++++++++++++++++++++++++|
-                    |+   Your Input Contains Alpha Character  !!   +|
+                    |+   Your Input Contains Alpha Characters !!   +|
                     |+++++++++++++++++++++++++++++++++++++++++++++++|
                     """);
             return true;
@@ -53,23 +52,24 @@ public class shopChecker {
         SOUT_utils.delayMessage(1, "Going back...");
     }
 
-    public static boolean hasCustomers(List<Buyer> buyers) {
-        boolean result = true;
+    public static boolean hasBuyers(List<Buyer> buyers) {
+        boolean flag = true;
 
         if (buyers.size() == 0) {
             SOUT_utils.delayMessage(1, "There are no buyers!");
-            result = false;
+            flag = false;
         }
-        return result;
+        return flag;
     }
 
     public static boolean isCartEmpty(List<Item> items) {
-        boolean result = false;
+        boolean flag = false;
 
-        if (items.size() == 0) {
+        if (items.size() ==0 )
+        {
             SOUT_utils.delayMessage(1, "Your cart is empty!");
-            result = true;
+            flag = true;
         }
-        return result;
+        return flag;
     }
 }

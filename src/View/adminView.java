@@ -1,7 +1,7 @@
 package View;
 
 import Utils.SOUT_utils;
-import Helper.UserInput.shopChecker;
+import Utils.ShopUtils;
 import Model.Buyer;
 import Model.Item;
 import Model.BuyProcess;
@@ -46,7 +46,7 @@ public class adminView extends BasicView {
 
 
     public void showCustomerInfo(List<Buyer> c) {
-        if (!shopChecker.hasCustomers(c)) return;
+        if (!ShopUtils.hasBuyers(c)) return;
         int size = c.size();
         int[] i = {0};
         System.out.println("\n╔═════════════════════════════════════════╗");
@@ -69,7 +69,7 @@ public class adminView extends BasicView {
 
         p.forEach(item -> {
             System.out.println("\n┌──────────────────────────────────────────");
-            System.out.printf("│ Product name: %s\n│ Product price: %.1f\n│ Product quantity: %d\n", item.getProductName(), item.getProductPrice(), item.getProductQuantity());
+            System.out.printf("│ Product name: %s\n│ Product price: %.1f\n│ Product quantity: %d\n", item.getItemName(), item.getProductPrice(), item.getItemAmount());
         });
         System.out.println("└──────────────────────────────────────────");
     }

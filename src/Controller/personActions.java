@@ -1,10 +1,10 @@
 package Controller;
 
-import Helper.Banners;
+import Utils.Banners;
 import Helper.File.CSV_fileUpdater;
 import Helper.File.CSV_fileWriter;
 import Utils.SOUT_utils;
-import Helper.UserInput.shopChecker;
+import Utils.ShopUtils;
 import Model.Buyer;
 import Model.Item;
 import Model.Admin;
@@ -16,18 +16,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class personActions {
-    private static final List<Item> INVENTORY_PRODUCTS___SHOP = Admin.inventory;
+    private final Buyer buyer;
+    private static final List<Item> shopItemList = Admin.inventory;
     private static final List<BuyProcess> moneyMovements = Admin.movements;
     private final List<Item> productsOnCard;
     private final List<Item> customerInventory;
-    private final Scanner uInput = new Scanner(System.in);
-    private final Buyer buyer;
     private final PersonView personView = new PersonView();
+    private final Scanner uInput = new Scanner(System.in);
 
     public personActions(Buyer buyer) {
         this.buyer = buyer;
         productsOnCard = buyer.getMyCart();
-        customerInventory = buyer.getBoughtProducts();
+        customerInventory = buyer.getOwnedItems();
     }
 
     public void chooseFromDashboard() {
@@ -36,14 +36,14 @@ public class personActions {
             personView.showDashboard();
             String input = uInput.nextLine();
 
-            if (shopChecker.containLetter(input)) continue;
+            if (ShopUtils.containLetter(input)) continue;
 
             int choice = Integer.parseInt(input);
 
             switch (choice) {
                 case 0 -> buyer.printInfo();
-                case 1 -> cashIn();
-                case 2 -> goShopping();
+                case 1 -> addMoney();
+                case 2 -> goWildin();
                 case 3 -> personView.showUserInfo(buyer);
                 case 4 -> personView.showUserBalance(buyer);
                 case 5 -> personView.viewMyCart(productsOnCard);
@@ -58,49 +58,41 @@ public class personActions {
         }
     }
 
-    private void cashIn() {
+    private void addMoney() {
         try {
-            int max = 1000;
-            int min = 500;
+            int upLimit = 1000;
+            int lowLimit = 500;
 
-            System.out.println("Enter the amount of money (Min: 500 ; Max: 1000)");
+            System.out.println("How much money you want to add <500,1000>\n: ");
             double inputMoney = Double.parseDouble(uInput.nextLine());
 
-            // Calls the cashIn method again if the money was out of range.
-            if (inputMoney < min || inputMoney > max) {
+            if (inputMoney < lowLimit || inputMoney > upLimit) {
                 SOUT_utils.delayMessage(1, "Out of range!");
-                cashIn();
-            } else {
+                addMoney();
+            }
+            else {
                 SOUT_utils.delayMessage(1, String.format("Success! you cashed in P%.1f", inputMoney));
                 buyer.setBalance(buyer.getBalance() + inputMoney);
             }
             // Code would reach here if the user input a numeric char.
-        } catch (NumberFormatException e) {
-            shopChecker.numFormatException();
-            cashIn();
+        } catch (NumberFormatException exc) {
+            ShopUtils.numFormatException();
+            addMoney();
         }
     }
 
-    private void goShopping() {
+    private void goWildin() {
         Item chosenItem;
 
         //?  This is for java to immediately exit the method if there are no products.
-        if (INVENTORY_PRODUCTS___SHOP.size() == 0) {
-            SOUT_utils.delayMessage(1, "No Available products as of now!");
+        if (shopItemList.size() == 0) {
+            SOUT_utils.delayMessage(1, "We Have Nothing!");
             return;
         }
-
-        System.out.println("""
-                _________________________
-                |                       |
-                | WELCOME TO THE SHOP ! |
-                |                       |
-                -------------------------
-                """);
-
-        int i = 0;
-        for (Item item : INVENTORY_PRODUCTS___SHOP) {
-            if (item.getProductQuantity() == 0) continue;
+        Banners.printRandomShopBanner(true);
+        int q = 0;
+        for (Item item : shopItemList) {
+            if (item.getItemAmount() == 0) continue;
 
             System.out.println("----------------------------");
             System.out.printf("""
@@ -108,14 +100,14 @@ public class personActions {
                     item name: %s
                     price: %.1f
                     quantity: %d
-                    """, i, item.getProductName(), item.getProductPrice(), item.getProductQuantity());
+                    """, q, item.getItemName(), item.getProductPrice(), item.getItemAmount());
             System.out.println("----------------------------");
-            i++;
+            q++;
         }
         try {
             System.out.print("\nEnter the item number: ");
-            int productNumber = Integer.parseInt(uInput.nextLine());
-            chosenItem = INVENTORY_PRODUCTS___SHOP.get(productNumber);
+            int pNum = Integer.parseInt(uInput.nextLine());
+            chosenItem = shopItemList.get(pNum);
 
             System.out.println("""
                     \nDo you want to add to cart or buy now?
@@ -128,46 +120,54 @@ public class personActions {
             if (choice == 1) addToCart(chosenItem);
             else if (choice == 2) buyNow(chosenItem);
             else {
-                shopChecker.outOfRangeException();
-                goShopping();
+                ShopUtils.outOfRangeException();
+                goWildin();
             }
-        } catch (NumberFormatException e) {
-            shopChecker.numFormatException();
-            goShopping();
-        } catch (IndexOutOfBoundsException e) {
-            shopChecker.outOfRangeException();
-            goShopping();
+        } catch (NumberFormatException exc) {
+            ShopUtils.numFormatException();
+            goWildin();
+        } catch (IndexOutOfBoundsException exc) {
+            ShopUtils.outOfRangeException();
+            goWildin();
         }
     }
 
-    private void addToCart(Item chosenItem) {
+    private void addToCart(Item desiredItem) {
         try {
-            System.out.print("Enter quantity: ");
+            System.out.print("Amount to add to Card: ");
             int qty = Integer.parseInt(uInput.nextLine());
-            chosenItem.setAmount_toBuy(qty);
+            desiredItem.kolkoKupit(qty);
 
-            if (qty > chosenItem.getProductQuantity()) {
-                SOUT_utils.delayMessage(1, "We don't have enough stock for that quantity!");
+            if (qty > desiredItem.getItemAmount()) {
+                SOUT_utils.delayMessage(1, "Sorry, you are requesting a bit too much!");
                 return;
             }
 
             // ? sets the new quantity of that item
-            chosenItem.setProductQuantity(chosenItem.getProductQuantity() - qty);
+            desiredItem.setItemAmount(desiredItem.getItemAmount() - qty);
 
             // ? make and write the file to where that item will be stored.
-            CSV_fileWriter.makeFile("src/CSV/customerCart.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
-            CSV_fileWriter.writeToFile(new File("src/CSV/customerCart.csv"), String.format("%s,%s,%.1f,%d\n", buyer.getFirstName(), chosenItem.getProductName(), chosenItem.getProductPrice(), chosenItem.getAmount_toBuy()));
+            CSV_fileWriter.createCSV("data/card.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
 
-            productsOnCard.add(chosenItem);
+            CSV_fileWriter.writeToCSV(
+                    new File("data/customerCart.csv"),
+                    String.format("%s,%s,%.1f,%d\n",
+                            buyer.getFirstName(),
+                            desiredItem.getItemName(),
+                            desiredItem.getProductPrice(),
+                            desiredItem.getAmount_toBuy())
+            );
+
+            productsOnCard.add(desiredItem);
 
         } catch (NumberFormatException e) {
-            shopChecker.numFormatException();
-            addToCart(chosenItem);
+            ShopUtils.numFormatException();
+            addToCart(desiredItem);
         }
     }
 
     private void clearCart() {
-        if (shopChecker.isCartEmpty(productsOnCard)) return;
+        if (ShopUtils.isCartEmpty(productsOnCard)) return;
 
         SOUT_utils.delayMessage(1, "Cart successfully cleared!");
         productsOnCard.clear();
@@ -176,11 +176,11 @@ public class personActions {
     private void buyNow(Item chosenItem) {
         System.out.print("\nEnter quantity: ");
         int qty = Integer.parseInt(uInput.nextLine());
-        chosenItem.setAmount_toBuy(qty);
+        chosenItem.kolkoKupit(qty);
 
         //? This is for when the user input 0 , we set it to 1 to avoid multiplying to 0
         if (qty == 0) qty = 1;
-        if (qty > chosenItem.getProductQuantity()) {
+        if (qty > chosenItem.getItemAmount()) {
             SOUT_utils.delayMessage(1, "We don't have enough stock for that quantity!");
             return;
         }
@@ -195,26 +195,25 @@ public class personActions {
         customerInventory.add(chosenItem);
 
         ProductActions productActions = new ProductActions(chosenItem);
-        productActions.updateProductQuantity(qty);
-        productActions.updateProduct();
+        productActions.updateItemAmount(qty);
+        productActions.updateItem();
 
         // ? This is for making/writing to transactionsCSV to load later when the program runs again
-        CSV_fileWriter.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
-        CSV_fileWriter.writeTransactions(buyProcess + "\n");
+        CSV_fileWriter.createCSV("data/movements.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+        CSV_fileWriter.moneyMovementsWriter(buyProcess + "\n");
     }
 
     private void checkOut() {
         int totalPrice = 0;
 
         if (productsOnCard.size() == 0) {
-            SOUT_utils.delayMessage(1, "You have nothing in cart!");
+            SOUT_utils.delayMessage(1, "Your card is empty!");
             return;
         }
 
-        // ? This totals the products from the customer cart
         for (Item item : productsOnCard) {
-            if (item.getProductQuantity() <= 0) {
-                SOUT_utils.delayMessage(1, "No stocks for " + item.getProductName());
+            if (item.getItemAmount() <= 0) {
+                SOUT_utils.delayMessage(1, "No stocks for " + item.getItemName());
                 return;
             }
             totalPrice += item.getProductPrice() * item.getAmount_toBuy();
@@ -230,24 +229,23 @@ public class personActions {
             BuyProcess buyProcess = new BuyProcess(buyer, item);
             MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
-            SOUT_utils.delayMessage(2, "Processing your request..");
+            SOUT_utils.delayMessage(1, "Processing your request..");
             moneyMovementActions.startTransaction();
-
 
             moneyMovements.add(buyProcess);
             customerInventory.add(item);
 
             ProductActions productActions = new ProductActions(item);
-            productActions.updateProduct();
+            productActions.updateItem();
 
-            CSV_fileWriter.makeFile("src/CSV/transactions.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
-            CSV_fileWriter.writeTransactions(buyProcess + "\n");
+            CSV_fileWriter.createCSV("data/movements.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+            CSV_fileWriter.moneyMovementsWriter(buyProcess + "\n");
         }
 
         SOUT_utils.delayMessage(1, "Checkout done!");
 
         // ? Updates the file (customerCart.csv) by removing the customer who just checked out.
-        CSV_fileUpdater.updateCustomerCartCSV(buyer.getFirstName());
+        CSV_fileUpdater.update_BuyerCardItems(buyer.getFirstName());
         productsOnCard.clear();
     }
 }
