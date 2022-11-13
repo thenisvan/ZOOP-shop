@@ -45,7 +45,7 @@ public class ShopUtils {
         System.out.println("""
                                 
                 |+++++++++++++++++++++++++++++++++++++++++++|
-                |*        Undefined Number Range!!!        *|
+                |*        Undefined Number Range!!         *|
                 |+++++++++++++++++++++++++++++++++++++++++++|
                 """);
         SOUT_utils.delayMessage(1, "Going back...");

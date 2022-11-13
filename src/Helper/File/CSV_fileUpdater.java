@@ -9,7 +9,8 @@ public class CSV_fileUpdater extends CSV_fileWriter{
         File BuyerCardItemsFile = new File("data/cart.csv");
 
         try (BufferedReader bReader = new BufferedReader( new FileReader(BuyerCardItemsFile) ) ) {
-            if (tmp.createNewFile()) {
+            if (tmp.createNewFile())
+            {
                 FileWriter fW = new FileWriter( tmp, true);
 
                 String cL;

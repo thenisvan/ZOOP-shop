@@ -112,7 +112,7 @@ public class PersonActions {
             System.out.println("""
                     \nAdd to cart or Buy now?
                     1.) Cart
-                    2.) Buy 
+                    2.) Buy
                     """);
 
             int uChoice = Integer.parseInt(uInput.nextLine());
@@ -153,7 +153,7 @@ public class PersonActions {
 
             CSV_fileWriter.writeToCSV(
                     new File("data/cart.csv"),
-                    String.format("%s,%s,%.1f,%d\n",
+                    String.format("%s,%s,%.2f,%d\n",
                             buyer.getFirstName(),
                             desiredItem.getItemName(),
                             desiredItem.getItemPrice(),
@@ -162,7 +162,9 @@ public class PersonActions {
 
             itemsOnCard.add(desiredItem);
 
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException exc)
+        {
             ShopUtils.numFormatException();
             addToCart(desiredItem);
         }
@@ -182,7 +184,7 @@ public class PersonActions {
 
         if (qty == 0) qty = 1;
         if (qty > chosenItem.getItemAmount()) {
-            SOUT_utils.delayMessage(1, "We don't have enough stock for that quantity!");
+            SOUT_utils.delayMessage(1, "We don't have enough amount for u!");
             return;
         }
 

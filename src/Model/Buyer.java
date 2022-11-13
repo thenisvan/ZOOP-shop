@@ -29,20 +29,19 @@ public class Buyer extends Person {
                 ---------------------------------
                 | Name: %s %s
                 | Username: %s
-                \n
                 """, this.getFirstName(), this.getLastName(), this.getUsername());
 
 
         System.out.println("| Card:\n");
         for (Item i : shoppingCard)
-            System.out.printf("\t\t %s\n", i.toString());
+            System.out.printf("| \t\t %s\n", i.toString());
 
 
-        System.out.println("| Owned Items:\n");
+        System.out.println("| Owned Items:");
 
 
         for (Item i : inventory)
-            System.out.printf("\t\t %s\n", i.toString());
+            System.out.printf("| \t\t %s\n", i.toString());
 
     }
 

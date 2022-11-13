@@ -3,7 +3,6 @@ package Model;
 import java.util.ArrayList;
 
 public class Admin extends Person {
-    //    public static final List<Product> inventory = new ArrayList<>();
     public static final ArrayList<BuyProcess> movements = new ArrayList<>();
     public static final ArrayList<Buyer> buyers = new ArrayList<>();
 

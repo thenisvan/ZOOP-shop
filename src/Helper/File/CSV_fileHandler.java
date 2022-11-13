@@ -7,7 +7,6 @@ import Model.BuyProcess;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 import static Helper.File.CSV_fileWriter.writeToCSV;
 
@@ -34,25 +33,28 @@ public class CSV_fileHandler {
     }
 
     protected static void replaceFile(String old_filePath, String pathOfNewFile) {
-        String sCurrRiadok;
+        String currLine;
 
         try {
             BufferedReader buffReader = new BufferedReader(new FileReader(old_filePath));
             BufferedWriter buffWriter = new BufferedWriter(new FileWriter(pathOfNewFile));
 
-            while ( (sCurrRiadok = buffReader.readLine()) != null ) {
-                buffWriter.write(sCurrRiadok);
+            while ( (currLine = buffReader.readLine()) != null ) {
+                buffWriter.write(currLine);
                 buffWriter.newLine();
             }
 
             buffWriter.close();
             buffReader.close();
 
-            // zmazanie stareho
-            File toBeDeleted = new File(old_filePath);
-            toBeDeleted.delete();
+/*
+              Delete Old file
+              File toBeDeleted = new File(old_filePath);
+              toBeDeleted.delete();
+*/
 
-        } catch (IOException exc) {
+        }
+        catch (IOException exc) {
             exc.printStackTrace();
         }
     }
