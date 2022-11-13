@@ -3,67 +3,57 @@ package View;
 import Utils.SOUT_utils;
 import Utils.ShopUtils;
 import Model.Item;
-
 import java.util.List;
 
 public class PersonView extends BasicView {
-    public void showDashboard() {
+    public void showMENU() {
         System.out.println("""
-                What do you want to do?
+                \n
                 0.) Print All My Information
                 1.) Add Money to account
                 2.) Go shoppin'
                 3.) View basic Info
                 4.) View My Balance
-                5.) View Items On Card
-                6.) Delete Card Items
-                7.) Buy items on Card
+                5.) Display Cart
+                6.) Delete Cart
+                7.) Buy items osaved on Card
                 8.) View my inventory
-                9.) Logout
+                9.) Log Out
                 """);
         System.out.print("#: ");
     }
 
-//    public void showUserInfo(Customer customer) {
-//        System.out.println("\n#############################");
-//        System.out.printf("Firstname : %s\nLastname : %s", customer.getFirstName(), customer.getLastName());
-//        System.out.println("#############################");
-//    }
+    public void viewMyCart(List<Item> cC) {
+        if (ShopUtils.hasNoItems(cC))
+            return;
 
-//    public void showUserBalance(Customer customer) {
-//        UIHelper.sleep(1, "Balance: P" + customer.getBalance());
-//    }
-
-    public void viewMyCart(List<Item> customerCart) {
-        if (ShopUtils.isCartEmpty(customerCart)) return;
-
-        System.out.println("\n** YOUR CART **");
-        customerCart.forEach(cart -> {
-            System.out.println("\n+++++++++++++++++++++++++++++");
+        System.out.println("\nU have following items on cart");
+        cC.forEach(cartItem -> {
+            System.out.println("\n┌────────────────────────────────");
             System.out.printf("""
-                    Product name: %s
-                    Product price: %.1f
-                    Quantity: %d
-                    """, cart.getItemName(), cart.getProductPrice(), cart.getAmount_toBuy());
-            System.out.println("\n+++++++++++++++++++++++++++++");
+                    │ Item name: %s
+                    │ Item price: %.1f
+                    │ Amount: %d
+                    """, cartItem.getItemName(), cartItem.getItemPrice(), cartItem.getAmount_toBuy());
+            System.out.println("\n└────────────────────────────────");
         });
     }
 
-    public void viewMyBoughtProducts(List<Item> boughtItems) {
-        if (boughtItems.size() == 0) {
-            SOUT_utils.delayMessage(1, "You haven't bought any items!");
+    public void viewOwnedItems(List<Item> ownedItems) {
+        if (ownedItems.size() == 0) {
+            SOUT_utils.delayMessage(1, "You have no Items!");
             return;
         }
 
-        System.out.println("\n** Your Bought Products **");
-        boughtItems.forEach(boughtProduct -> {
-            System.out.println("\n+++++++++++++++++++++++++++++");
+        System.out.println("\nYour Items");
+        ownedItems.forEach(ownedItem -> {
+            System.out.println("\n┌────────────────────────────────");
             System.out.printf("""
-                    Product name: %s
-                    Product price: %.1f
-                    Bought Quantity: %d
-                    """, boughtProduct.getItemName(), boughtProduct.getProductPrice(), boughtProduct.getAmount_toBuy());
-            System.out.println("\n+++++++++++++++++++++++++++++");
+                  │ Item name: %s
+                  │ Item price: %.1f
+                  │ Amount: %d
+                  """, ownedItem.getItemName(), ownedItem.getItemPrice(), ownedItem.getAmount_toBuy());
+            System.out.println("\n└────────────────────────────────");
         });
     }
 }

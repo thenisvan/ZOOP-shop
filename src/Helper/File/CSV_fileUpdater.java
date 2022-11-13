@@ -18,11 +18,8 @@ public class CSV_fileUpdater extends CSV_fileWriter{
                     String[] dChunk = cL.split(",");
                     String buyer_name = dChunk[0];
 
-                    //? Skips the customer who just checked out (that means his cart is empty).
-                    //? To imitate removing of accounts.
                     if (buyer_name.equals(uName)) continue;
 
-                    //? Write other buyer to the tmpFile.
                     fW.write(cL +"\n");
                 }
                 fW.close();

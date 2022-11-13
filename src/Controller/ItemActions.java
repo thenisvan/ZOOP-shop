@@ -4,13 +4,12 @@ import Model.Admin;
 import Model.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class ProductActions {
+public class ItemActions {
     private final Item item;
     private final ArrayList<Item> itemList = Admin.inventory;
 
-    public ProductActions(Item item) {
+    public ItemActions(Item item) {
         this.item = item;
     }
     public void updateItemAmount(int toBuy) {

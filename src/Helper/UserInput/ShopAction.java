@@ -1,7 +1,7 @@
 package Helper.UserInput;
 
-import Controller.personActions;
-import Controller.adminControl;
+import Controller.PersonActions;
+import Controller.AdminControl;
 import Helper.File.CSV_fileLoader;
 import Helper.File.CSV_fileWriter;
 import Utils.SOUT_utils;
@@ -21,9 +21,9 @@ public class ShopAction {
     private static final List<Buyer> listOfBuyers = Admin.buyers;
     private static final List<Item> inventoryItems = Admin.inventory;
     private static final File accountsFile = new File("data/accounts.csv");
-    private static final File productsFile = new File("data/items.csv");
+    private static final File itemsFile = new File("data/items.csv");
     private static final File moneyMovementsFile = new File("data/movements.csv");
-    private static final File productsOnCardFile = new File("data/cart.csv");
+    private static final File itemsOnCardFile = new File("data/cart.csv");
 
     public static void startShop() throws IOException {
         loadCSVs();
@@ -61,8 +61,8 @@ public class ShopAction {
 
     private static void loadCSVs() {
         CSV_fileLoader.buyers_load(accountsFile);
-        CSV_fileLoader.items_load(productsFile);
-        CSV_fileLoader.buyerCart_load(productsOnCardFile);
+        CSV_fileLoader.items_load(itemsFile);
+        CSV_fileLoader.buyerCart_load(itemsOnCardFile);
         CSV_fileLoader.movements_load(moneyMovementsFile);
     }
 
@@ -70,8 +70,8 @@ public class ShopAction {
         if (accountsFile.exists()) accountsFile.delete();
         CSV_fileWriter.createCSV(accountsFile.toString(), "FirstName,LastName,Username,Password,Balance\n");
 
-        if (productsFile.exists()) productsFile.delete();
-        CSV_fileWriter.createCSV(productsFile.toString(), "ProductName,ProductPrice,ProductQuantity\n");
+        if (itemsFile.exists()) itemsFile.delete();
+        CSV_fileWriter.createCSV(itemsFile.toString(), "ItemName,ItemPrice,ItemAmount\n");
 
         for (Buyer buyer : listOfBuyers) {
             CSV_fileWriter.writeToCSV(accountsFile, buyer + "\n");
@@ -79,7 +79,7 @@ public class ShopAction {
 
         for (Item item : inventoryItems) {
             if (item.getItemAmount() != 0) {
-                CSV_fileWriter.writeToCSV(productsFile, item + "\n");
+                CSV_fileWriter.writeToCSV(itemsFile, item + "\n");
             }
         }
     }
@@ -102,20 +102,19 @@ public class ShopAction {
         if (uName.equals("admin") && pass.equals("pass")) {
             SOUT_utils.afterLogIn();
 
-            adminControl adminControl = new adminControl();
-            adminControl.chooseFromDashboard();
+            AdminControl adminControl = new AdminControl();
+            adminControl.selectFromMenu();
             return;
         }
-//      Check login for additional Customers accounts
+//      Check creds for other accounts
         for (Buyer buyer : ShopAction.listOfBuyers) {
             if (buyer.getUsername().equals(uName) && buyer.getPass().equals(pass)) {
                 SOUT_utils.afterLogIn();
-                personActions personActions = new personActions(buyer);
+                PersonActions personActions = new PersonActions(buyer);
                 personActions.chooseFromDashboard();
                 return;
             }
         }
-
         SOUT_utils.delayMessage(1, "No account found!");
     }
 
@@ -131,7 +130,6 @@ public class ShopAction {
         String pass = uInput.nextLine();
 
         if (ShopUtils.isInputInvalid(fName, lName, uName, pass)) return;
-
         SOUT_utils.delayMessage(1, String.format("User [%s] has been added !",uName));
         listOfBuyers.add(new Buyer(fName, lName, uName, pass));
     }

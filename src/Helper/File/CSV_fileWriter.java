@@ -10,8 +10,8 @@ public class CSV_fileWriter extends CSV_fileHandler {
             fw.append(ctx);
             fw.flush();
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (IOException exc) {
+            exc.printStackTrace();
         }
     }
         public static void moneyMovementsWriter(String ctx) {

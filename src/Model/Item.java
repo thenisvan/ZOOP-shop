@@ -1,28 +1,28 @@
 package Model;
 
 public class Item {
-    private final String productName;
-    private final Double productPrice;
+    private final String itemName;
+    private final Double itemPrice;
     private Integer amount_available;
     private Integer amount_toBuy;
 
-    public Item(String productName, Double productPrice, Integer productQuantity) {
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.amount_available = productQuantity;
+    public Item(String itemName, Double itemPrice, Integer itemAmount) {
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.amount_available = itemAmount;
     }
 
     @Override
     public String toString() {
-        return String.format("%s,%.2f,%d", getItemName(), getProductPrice(), getItemAmount());
+        return String.format("%s,%.2f,%d", getItemName(), getItemPrice(), getItemAmount());
     }
 
     public String getItemName() {
-        return productName;
+        return itemName;
     }
 
-    public Double getProductPrice() {
-        return productPrice;
+    public Double getItemPrice() {
+        return itemPrice;
     }
 
     public Integer getItemAmount() {

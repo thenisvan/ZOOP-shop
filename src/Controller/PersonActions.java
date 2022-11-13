@@ -12,28 +12,28 @@ import Model.BuyProcess;
 import View.PersonView;
 
 import java.io.File;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class personActions {
+public class PersonActions {
     private final Buyer buyer;
-    private static final List<Item> shopItemList = Admin.inventory;
-    private static final List<BuyProcess> moneyMovements = Admin.movements;
-    private final List<Item> productsOnCard;
-    private final List<Item> customerInventory;
+    private static final ArrayList<Item> shopItemList = Admin.inventory;
+    private static final ArrayList<BuyProcess> moneyMovements = Admin.movements;
+    private final ArrayList<Item> itemsOnCard;
+    private final ArrayList<Item> buyerItemList;
     private final PersonView personView = new PersonView();
     private final Scanner uInput = new Scanner(System.in);
 
-    public personActions(Buyer buyer) {
+    public PersonActions(Buyer buyer) {
         this.buyer = buyer;
-        productsOnCard = buyer.getMyCart();
-        customerInventory = buyer.getOwnedItems();
+        itemsOnCard = buyer.getMyCart();
+        buyerItemList = buyer.getOwnedItems();
     }
 
     public void chooseFromDashboard() {
         while (true) {
-            Banners.printRandomPersonBanner(true);
-            personView.showDashboard();
+            Banners.printRandomPersonBanner(false);
+            personView.showMENU();
             String input = uInput.nextLine();
 
             if (ShopUtils.containLetter(input)) continue;
@@ -45,11 +45,11 @@ public class personActions {
                 case 1 -> addMoney();
                 case 2 -> goWildin();
                 case 3 -> personView.showUserInfo(buyer);
-                case 4 -> personView.showUserBalance(buyer);
-                case 5 -> personView.viewMyCart(productsOnCard);
+                case 4 -> personView.showUserMoney(buyer);
+                case 5 -> personView.viewMyCart(itemsOnCard);
                 case 6 -> clearCart();
                 case 7 -> checkOut();
-                case 8 -> personView.viewMyBoughtProducts(customerInventory);
+                case 8 -> personView.viewOwnedItems(buyerItemList);
                 case 9 -> {
                     return;
                 }
@@ -72,7 +72,7 @@ public class personActions {
             }
             else {
                 SOUT_utils.delayMessage(1, String.format("Success! you cashed in P%.1f", inputMoney));
-                buyer.setBalance(buyer.getBalance() + inputMoney);
+                buyer.setBalance(buyer.getMoney() + inputMoney);
             }
             // Code would reach here if the user input a numeric char.
         } catch (NumberFormatException exc) {
@@ -94,39 +94,43 @@ public class personActions {
         for (Item item : shopItemList) {
             if (item.getItemAmount() == 0) continue;
 
-            System.out.println("----------------------------");
+            System.out.println("─────────────────────────────");
             System.out.printf("""
-                    item number: %d
-                    item name: %s
-                    price: %.1f
-                    quantity: %d
-                    """, q, item.getItemName(), item.getProductPrice(), item.getItemAmount());
-            System.out.println("----------------------------");
+                    Item N*: %d
+                    Name: %s
+                    Price: %.2f
+                    Amount: %d
+                    """, q, item.getItemName(), item.getItemPrice(), item.getItemAmount());
+            System.out.println("─────────────────────────────");
             q++;
         }
         try {
-            System.out.print("\nEnter the item number: ");
+            System.out.print("\nWhich one u want to buy [number]: ");
             int pNum = Integer.parseInt(uInput.nextLine());
             chosenItem = shopItemList.get(pNum);
 
             System.out.println("""
-                    \nDo you want to add to cart or buy now?
-                    1 -> Add to cart
-                    2 -> Buy now
+                    \nAdd to cart or Buy now?
+                    1.) Cart
+                    2.) Buy 
                     """);
 
-            int choice = Integer.parseInt(uInput.nextLine());
+            int uChoice = Integer.parseInt(uInput.nextLine());
 
-            if (choice == 1) addToCart(chosenItem);
-            else if (choice == 2) buyNow(chosenItem);
+            if (uChoice == 1) 
+                addToCart(chosenItem);
+            else if (uChoice == 2) 
+                buyNow(chosenItem);
             else {
                 ShopUtils.outOfRangeException();
                 goWildin();
             }
-        } catch (NumberFormatException exc) {
+        } 
+        catch (NumberFormatException exc) {
             ShopUtils.numFormatException();
             goWildin();
-        } catch (IndexOutOfBoundsException exc) {
+        } 
+        catch (IndexOutOfBoundsException exc) {
             ShopUtils.outOfRangeException();
             goWildin();
         }
@@ -143,22 +147,20 @@ public class personActions {
                 return;
             }
 
-            // ? sets the new quantity of that item
             desiredItem.setItemAmount(desiredItem.getItemAmount() - qty);
 
-            // ? make and write the file to where that item will be stored.
-            CSV_fileWriter.createCSV("data/card.csv", "CustomerName,ProductName,ProductPrice,ProductBoughtQuantity\n");
+            CSV_fileWriter.createCSV("data/cart.csv", "BuyerName,ItemName,ItemPrice,ItemsOwnedAmount\n");
 
             CSV_fileWriter.writeToCSV(
-                    new File("data/customerCart.csv"),
+                    new File("data/cart.csv"),
                     String.format("%s,%s,%.1f,%d\n",
                             buyer.getFirstName(),
                             desiredItem.getItemName(),
-                            desiredItem.getProductPrice(),
+                            desiredItem.getItemPrice(),
                             desiredItem.getAmount_toBuy())
             );
 
-            productsOnCard.add(desiredItem);
+            itemsOnCard.add(desiredItem);
 
         } catch (NumberFormatException e) {
             ShopUtils.numFormatException();
@@ -167,18 +169,17 @@ public class personActions {
     }
 
     private void clearCart() {
-        if (ShopUtils.isCartEmpty(productsOnCard)) return;
+        if (ShopUtils.hasNoItems(itemsOnCard)) return;
 
-        SOUT_utils.delayMessage(1, "Cart successfully cleared!");
-        productsOnCard.clear();
+        SOUT_utils.delayMessage(1, "Card is null!");
+        itemsOnCard.clear();
     }
 
     private void buyNow(Item chosenItem) {
-        System.out.print("\nEnter quantity: ");
+        System.out.print("\nAmoount: ");
         int qty = Integer.parseInt(uInput.nextLine());
         chosenItem.kolkoKupit(qty);
 
-        //? This is for when the user input 0 , we set it to 1 to avoid multiplying to 0
         if (qty == 0) qty = 1;
         if (qty > chosenItem.getItemAmount()) {
             SOUT_utils.delayMessage(1, "We don't have enough stock for that quantity!");
@@ -189,63 +190,62 @@ public class personActions {
         MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
         //  if transaction failed
-        if (!moneyMovementActions.startTransaction()) return;
+        if (!moneyMovementActions.startTransaction()) 
+            return;
 
         moneyMovements.add(buyProcess);
-        customerInventory.add(chosenItem);
+        buyerItemList.add(chosenItem);
 
-        ProductActions productActions = new ProductActions(chosenItem);
-        productActions.updateItemAmount(qty);
-        productActions.updateItem();
+        ItemActions itemActions = new ItemActions(chosenItem);
+        itemActions.updateItemAmount(qty);
+        itemActions.updateItem();
 
         // ? This is for making/writing to transactionsCSV to load later when the program runs again
-        CSV_fileWriter.createCSV("data/movements.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+        CSV_fileWriter.createCSV("data/movements.csv", "BuyerName,ItemName,ItemPrice,ItemAmount\n");
         CSV_fileWriter.moneyMovementsWriter(buyProcess + "\n");
     }
 
     private void checkOut() {
-        int totalPrice = 0;
+        int calculatedPricee=0;
 
-        if (productsOnCard.size() == 0) {
-            SOUT_utils.delayMessage(1, "Your card is empty!");
-            return;
+        if (itemsOnCard.size()== 0) {
+            SOUT_utils.delayMessage(1, "Your card is empty!"); return;
         }
 
-        for (Item item : productsOnCard) {
+        for (Item item : itemsOnCard) {
             if (item.getItemAmount() <= 0) {
-                SOUT_utils.delayMessage(1, "No stocks for " + item.getItemName());
+                SOUT_utils.delayMessage(1, "Sorry, amount is 0 of item: " + item.getItemName());
                 return;
             }
-            totalPrice += item.getProductPrice() * item.getAmount_toBuy();
+            calculatedPricee += item.getItemPrice() * item.getAmount_toBuy();
         }
 
-        if (buyer.getBalance() < totalPrice) {
-            SOUT_utils.delayMessage(1, "You don't have enough money to pay for that!");
+        if (buyer.getMoney() < calculatedPricee) {
+            SOUT_utils.delayMessage(1, "You don't have enough money!");
             return;
         }
 
-        // ? Loops throughout the customerCart and make transactions in each of the products
-        for (Item item : productsOnCard) {
+          for (Item item : itemsOnCard) {
             BuyProcess buyProcess = new BuyProcess(buyer, item);
             MoneyMovementActions moneyMovementActions = new MoneyMovementActions(buyProcess);
 
-            SOUT_utils.delayMessage(1, "Processing your request..");
+            SOUT_utils.delayMessage(1, "Processing....");
             moneyMovementActions.startTransaction();
 
             moneyMovements.add(buyProcess);
-            customerInventory.add(item);
+            buyerItemList.add(item);
 
-            ProductActions productActions = new ProductActions(item);
-            productActions.updateItem();
+            ItemActions itemActions = new ItemActions(item);
+            itemActions.updateItem();
 
-            CSV_fileWriter.createCSV("data/movements.csv", "CustomerName,ProductName,ProductPrice,ProductQuantity\n");
+            CSV_fileWriter.createCSV("data/movements.csv", "BuyerName,ItemName,ItemPrice,ItemAmount\n");
             CSV_fileWriter.moneyMovementsWriter(buyProcess + "\n");
         }
 
         SOUT_utils.delayMessage(1, "Checkout done!");
 
-        // ? Updates the file (customerCart.csv) by removing the customer who just checked out.
+        // ? Updates the file , rem buyer who registered this time.
         CSV_fileUpdater.update_BuyerCardItems(buyer.getFirstName());
-        productsOnCard.clear();
+        itemsOnCard.clear();
     }
 }

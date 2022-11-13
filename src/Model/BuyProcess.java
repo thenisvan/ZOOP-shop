@@ -9,20 +9,20 @@ public class BuyProcess {
         this.item = p;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), item.getItemName(), item.getProductPrice(), item.getAmount_toBuy());
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("%s,%s,%.1f,%d", buyer.getFirstName(), item.getItemName(), item.getItemPrice(), item.getAmount_toBuy());
+//    }
 
     public String showInfo() {
-        return item.getItemAmount() + "x of " + item.getItemName();
+        return item.getItemAmount() + "ks - " + item.getItemName();
     }
 
     public Buyer getBuyer() {
         return buyer;
     }
 
-    public Item getProduct() {
+    public Item getItem() {
         return item;
     }
 

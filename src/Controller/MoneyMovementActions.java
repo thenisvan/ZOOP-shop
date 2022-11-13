@@ -14,17 +14,17 @@ public class MoneyMovementActions {
 
     public boolean startTransaction() {
         Buyer buyer = BuyProcess.getBuyer();
-        Item item = BuyProcess.getProduct();
+        Item item = BuyProcess.getItem();
 
-        if (buyer.getBalance() < item.getProductPrice() * item.getAmount_toBuy()) {
+        if (buyer.getMoney() < item.getItemPrice() * item.getAmount_toBuy()) {
             System.out.println("You need more money. ");
             return false;
         }
 
-        double newBalance = buyer.getBalance() - item.getProductPrice() * item.getAmount_toBuy();
+        double newBalance = (buyer.getMoney() - item.getItemPrice() * item.getAmount_toBuy());
         buyer.setBalance(newBalance);
 
-        SOUT_utils.delayMessage(1, String.format("Your current balance is: %.2f", newBalance));
+        SOUT_utils.delayMessage(1, String.format("Your money: $%.2f ", newBalance));
         return true;
     }
 }

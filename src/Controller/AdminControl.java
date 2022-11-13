@@ -7,55 +7,50 @@ import Model.Buyer;
 import Model.Item;
 import Model.Admin;
 import Model.BuyProcess;
-import View.adminView;
+import View.AdminView;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class adminControl {
-    private final adminView adminView = new adminView();
+public class AdminControl {
+    private final AdminView adminView = new AdminView();
     private final Scanner uInput = new Scanner(System.in);
 //    lists
-    private static final List<Buyer> buyersList = Admin.buyers;
-    private final List<Item> shopInventory = Admin.inventory;
-    private final List<BuyProcess> moneyMovementsList = Admin.movements;
+    private static final ArrayList<Buyer> listOfBuyers = Admin.buyers;
+    private final ArrayList<Item> shopInventory = Admin.inventory;
+    private final ArrayList<BuyProcess> moneyMovementsList = Admin.movements;
 
-    public void chooseFromDashboard() {
+    public void selectFromMenu() {
+
         while (true) {
             Banners.printRandomAdminBanner(false);
-            adminView.showDashboard();
+            adminView.showMENU();
             String uIn = uInput.nextLine().trim(); // Remove whitespace from both sides of a string
-
-//            Check if our input contains Alpha symbol
-//            We can check it by regex using static function from InputChecker
             if (ShopUtils.containLetter(uIn)) continue;
-
-//            parse user answer
             int choice = Integer.parseInt(uIn);
 
             switch (choice) {
-                case 1 -> addProduct();
+                case 1 -> addItem();
                 case 2 -> adminView.showMoneyMovement(moneyMovementsList);
-                case 3 -> adminView.showCustomerInfo(buyersList);
-                case 4 -> adminView.showProducts(shopInventory);
-                case 5 -> removeACustomer();
-                case 6 -> {
-                    return;
-                }
-                default -> SOUT_utils.delayMessage(1, "Please enter from 1-6 only!");
+                case 3 -> adminView.showBuyerInfo(listOfBuyers);
+                case 4 -> adminView.showItems(shopInventory);
+                case 5 -> delBuyer();
+                case 6 -> { return; }
+
+                default -> SOUT_utils.delayMessage(1, "Enter only nums in range!");
             }
         }
     }
 
-    public void addProduct() {
+    public void addItem() {
         try {
-            System.out.print("\nWhat is the name of new Item: ");
+            System.out.print("\nName: ");
             String pName = uInput.nextLine();
 
-            System.out.print("What is the price of new Item: ");
+            System.out.print("Price: ");
             Double pPrice = Double.parseDouble(uInput.nextLine());
 
-            System.out.print("Quantity: ");
+            System.out.print("Amount: ");
             Integer pQuantity = Integer.parseInt(uInput.nextLine());
 
             shopInventory.add(new Item(pName, pPrice, pQuantity));
@@ -63,24 +58,26 @@ public class adminControl {
             SOUT_utils.delayMessage(1, String.format("%d %ss was added!", pQuantity, pName));
         } catch (NumberFormatException e) {
             ShopUtils.numFormatException();
-            addProduct();
+            addItem();
         }
     }
 
-    public void removeACustomer() {
-        if (!ShopUtils.hasBuyers(buyersList)) return;
+    public void delBuyer() {
+        if (!ShopUtils.hasBuyers(listOfBuyers))
+            return;
 
-        adminView.showCustomerInfo(buyersList);
+        adminView.showBuyerInfo(listOfBuyers);
 
-        System.out.print("Enter the customer first name: ");
-        String customerName = uInput.nextLine();
+        System.out.print("First name of buyer do be deleted: ");
+        String buyerName = uInput.nextLine();
 
-        if (ShopUtils.isInputInvalid(customerName)) return;
+        if (ShopUtils.isInputInvalid(buyerName))
+            return;
 
-        for (Buyer buyer : buyersList) {
-            if (buyer.getFirstName().equals(customerName)) {
-                SOUT_utils.delayMessage(1, String.format("Buyer %s was successfully removed!", buyer.getFirstName()));
-                buyersList.remove(buyer);
+        for (Buyer buyer : listOfBuyers) {
+            if (buyer.getFirstName().equals(buyerName)) {
+                SOUT_utils.delayMessage(1, String.format("Buyer %s kicked!", buyer.getFirstName()));
+                listOfBuyers.remove(buyer);
                 return;
             }
         }

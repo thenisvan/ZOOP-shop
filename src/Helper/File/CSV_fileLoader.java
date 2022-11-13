@@ -36,30 +36,27 @@ public class CSV_fileLoader extends CSV_fileHandler {
         if (!file_csvMovements.exists() )
             return;
 
-        try (BufferedReader bufferedReader = new BufferedReader( new FileReader(file_csvMovements) ) ) {
+        try (BufferedReader buffReader = new BufferedReader( new FileReader(file_csvMovements) ) ) {
             String cL;
             Buyer buyer = null;
             Item item = null;
 
-            String header = bufferedReader.readLine(); // skop first line
+            String header = buffReader.readLine(); // skop first line
             if (header == null) // if subor je empty tak return
                 return;
 
-            while ((cL = bufferedReader.readLine()) != null) {
+            while ((cL = buffReader.readLine()) != null) {
                 String[] dChunk = cL.split(",");
-                String customerName = dChunk[0];
-                String productName = dChunk[1];
+                String buyerName = dChunk[0];
+                String itemName = dChunk[1];
 
-                for (Buyer c : listOfBuyers) {
-                    if (c.getFirstName().equals(customerName)) buyer = c;
-                }
+                for (Buyer c : listOfBuyers)
+                    if (c.getFirstName().equals(buyerName)) buyer = c;
 
-                for (Item p : inventoryItems) {
-                    if (p.getItemName().equals(productName)) item = p;
-                }
+                for (Item p : inventoryItems)
+                    if (p.getItemName().equals(itemName)) item = p;
 
-                if (buyer == null || item == null)
-                    return;
+                if (buyer == null || item == null) return;
 
                 //? Makes a transaction based on the data to imitate loading from database.
                 listOfMMovements.add(new BuyProcess(buyer, item));
@@ -70,47 +67,46 @@ public class CSV_fileLoader extends CSV_fileHandler {
             }
 
 
+
         } catch (IOException exc) {
             exc.printStackTrace();
         }
     }
 
-    public static void buyerCart_load(File CUSTOMER_CART_CSV) {
-        if (!CUSTOMER_CART_CSV.exists()) return;
+    public static void buyerCart_load(File file_buyerCartItems) {
+        if (!file_buyerCartItems.exists()) return;
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CUSTOMER_CART_CSV))) {
-            String line;
+        try (BufferedReader buffReader = new BufferedReader(new FileReader(file_buyerCartItems))) {
+            String curLine;
             Buyer buyer = null;
-            List<Item> customerCart = null;
+            List<Item> buyerCart = null;
             Item item = null;
 
-            String header = bufferedReader.readLine(); // eats the header
-            if (header == null) return;
+            String firstLine = buffReader.readLine(); // eats the firstLine
+            if (firstLine == null) return;
 
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] data = line.split(",");
-
-                String customerName = data[0];
-                String productName = data[1];
+            while ((curLine = buffReader.readLine()) != null) {
+                String[] dChunk = curLine.split(",");
+                String buyerName = dChunk[0];
+                String itemName = dChunk[1];
 
                 for (Buyer c : listOfBuyers) {
-                    if (c.getFirstName().equals(customerName)) {
+                    if (c.getFirstName().equals(buyerName)) {
                         buyer = c;
-                        customerCart = buyer.getMyCart();
+                        buyerCart = buyer.getMyCart();
                     }
                 }
 
                 for (Item p : inventoryItems) {
-                    if (p.getItemName().equals(productName)) item = p;
+                    if (p.getItemName().equals(itemName)) item = p;
                 }
 
-                if (buyer == null || item == null || customerCart == null) return;
+                if (buyer == null || item == null || buyerCart == null) return;
 
-                //? Makes a product and store to the customerCart based on the data to imitate loading from database.
-                Item loadedItem = new Item(productName, Double.parseDouble(data[2]), item.getItemAmount());
+                Item loadedItem = new Item(itemName, Double.parseDouble(dChunk[2]), item.getItemAmount());
 
-                loadedItem.kolkoKupit(Integer.valueOf(data[3]));
-                customerCart.add(loadedItem);
+                loadedItem.kolkoKupit(Integer.valueOf(dChunk[3]));
+                buyerCart.add(loadedItem);
             }
 
 
@@ -130,7 +126,6 @@ public class CSV_fileLoader extends CSV_fileHandler {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] data = line.split(",");
 
-                //? Makes a customer based on the data to imitate loading from database.
                 Buyer buyer = new Buyer(data[0], data[1], data[2], data[3]);
                 buyer.setBalance(Double.parseDouble(data[4]));
 
