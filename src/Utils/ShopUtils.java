@@ -1,6 +1,5 @@
 package Utils;
 
-import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
 
@@ -62,7 +61,7 @@ public class ShopUtils {
         return flag;
     }
 
-    public static boolean isCartEmpty(List<Item> items) {
+    public static boolean hasNoItems(List<Item> items) {
         boolean flag = false;
 
         if (items.size() ==0 )
