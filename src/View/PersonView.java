@@ -5,7 +5,7 @@ import Utils.ShopUtils;
 import Model.Item;
 import java.util.List;
 
-public class PersonView extends BasicView {
+public class PersonView extends BasicView implements Views {
     public void showMENU() {
         System.out.println("""
                 \n
@@ -56,4 +56,9 @@ public class PersonView extends BasicView {
             System.out.println("\n└────────────────────────────────");
         });
     }
+
+
+
+
+
 }

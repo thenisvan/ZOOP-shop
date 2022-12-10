@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Admin extends Person {
+public class Admin extends Person implements Abilities {
     public static final ArrayList<BuyProcess> movements = new ArrayList<>();
     public static final ArrayList<Buyer> buyers = new ArrayList<>();
 
@@ -26,7 +26,13 @@ public class Admin extends Person {
         }
 
     }
+
+    @Override
+    public int getPoints() {
+        return 0;
+    }
+
     public Admin() {
-        super("Deno", "Ivan", "Admin", "pass");
+        super("Deno", "Ivan", "admin", "pass");
     }
 }

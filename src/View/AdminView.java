@@ -9,7 +9,7 @@ import Model.BuyProcess;
 
 import java.util.List;
 
-public class AdminView extends BasicView {
+public class AdminView extends BasicView implements Views {
     public void showMENU() {
         System.out.println("""
                 What do you want to do?

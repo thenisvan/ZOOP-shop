@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public abstract class Person {
+public abstract class Person  {
     private String fName, lName, uname, pass;
     public static final ArrayList<Item> inventory = new ArrayList<>();
 

@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Buyer extends Person {
+public class Buyer extends Person implements Abilities{
     private final ArrayList<Item> shoppingCard = new ArrayList<>();
     private final ArrayList<Item> inventory = new ArrayList<>();
     private Double balance = 0.0;
@@ -29,7 +29,8 @@ public class Buyer extends Person {
                 ---------------------------------
                 | Name: %s %s
                 | Username: %s
-                """, this.getFirstName(), this.getLastName(), this.getUsername());
+                | Points: %d
+                """, this.getFirstName(), this.getLastName(), this.getUsername(), this.getPoints());
 
 
         System.out.println("| Card:\n");
