@@ -26,11 +26,15 @@ public class Casting {
         dwnCasted.displayInformation();
 
         ArrayList<User> users = new ArrayList<User>();
-        users.add(new User("user1","user1", 25));
-        users.add(new RegularUser("regularUser1","regularUser1", 30));
-        users.add(new Admin("regularUser1","regularUser1", 30));
+        users.add(new User("user1", "user1", 25));
+        users.add(new RegularUser("regularUser1", "regularUser1", 30));
+        users.add(new Admin("regularUser1", "regularUser1", 30));
 
-        for (User uInLisr: users) {
+        for (User uInLisr : users) {
+            System.out.println(uInLisr.name);
+            uInLisr.displayInformation();
+        }
+        for (User uInLisr : users) {
             uInLisr.name = "Tomas";
             System.out.println(uInLisr.name);
             uInLisr.displayInformation();
