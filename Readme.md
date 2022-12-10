@@ -4,8 +4,8 @@ Console shop to show applied OOP principles
 
 - Login using this:
 
-    - `username:` **admin**
-    - `password:` **pass**
+    - `admin username:` **admin**
+    - `admin password:` **pass**
 
 ---
 
