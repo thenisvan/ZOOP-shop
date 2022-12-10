@@ -9,11 +9,20 @@ public class MoneyMovementActions {
     private final BuyProcess BuyProcess;
 
     public int calculatePoints(Item item, int amount){
-        return 50;
+        return (int) (item.getItemPrice() * amount / 10);
     }
-    public Double calculateDiscount(Double price, int points){
-//        return (price - price*(points/100) );
-        return 0.15; //15% off
+    public double calculateDiscount(Double price, int points){
+        if (price > 10)
+            if (points <= 10)
+                return price - (price*0.10);
+            else if (points <=20)
+                return price - (price*0.15); //15% off)
+            else if (points <=50)
+                return price - (price*0.40); //15% off)
+            else
+                return price - (price*0.50); //15% off)
+        else
+            return price - (price*0);
     }
     public MoneyMovementActions(BuyProcess buyProcess) {
         this.BuyProcess = buyProcess;
@@ -29,14 +38,14 @@ public class MoneyMovementActions {
 
 //        TODO: ask how many points buyer wants to use
 
-        if (buyer.getMoney() < ( subTotal) /*TODO: implement discount based on user points*/) {
+        if (buyer.getMoney() < ( discountedPrice )) {
             System.out.println("You need more money. ");
             return false;
         }
 
-        double newBalance = (buyer.getMoney() - item.getItemPrice() * item.getAmount_toBuy() /*TODO: implement discount based on user points*/);
+        double newBalance = ( ( buyer.getMoney() -( discountedPrice )));
         buyer.setBalance(newBalance);
-//        buyer.setPoints(buyer.getPoints()*item.getAmount_toBuy());
+        buyer.setPoints(buyer.getPoints()+pointsFetched);
 
         SOUT_utils.delayMessage(1, String.format("Your money: $%.2f ", newBalance));
         return true;
