@@ -19,10 +19,11 @@ public class BasicView implements Views{
 
     public void showUserInfo(Buyer buyer) {
         System.out.println("\n┌──────────────────────────────────────────");
-        System.out.printf("" +
-                "│ Firstname : %s\n" +
-                "│ Lastname : %s", buyer.getFirstName(), buyer.getLastName());
-        System.out.println("└──────────────────────────────────────────");
+        System.out.printf("""
+                │ Firstname : %s
+                │ Lastname : %s
+                │ Poinds : %d""", buyer.getFirstName(), buyer.getLastName(), buyer.getPoints());
+        System.out.println("\n└──────────────────────────────────────────");
     }
 
     public void showUserMoney(Buyer buyer) {

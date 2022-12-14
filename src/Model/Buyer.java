@@ -1,5 +1,7 @@
 package Model;
 
+import View.PersonView;
+
 import java.util.ArrayList;
 
 public class Buyer extends Person implements Abilities{
@@ -11,12 +13,31 @@ public class Buyer extends Person implements Abilities{
     public Buyer(String f, String l, String u, String p) {
         super(f, l, u, p);
     }
-
+    private Buyer(String f, String l) {
+        super(f, l, f, "default");
+    }
+    @Override
+    public void printAbilities(Person p) {
+        System.out.println("Abilities for Buyer:");
+        if (p instanceof Buyer) {
+            ((Buyer) p).printDetailedInfo((Buyer) p);
+        }
+    }
     public Buyer(String f, String l, String u, String p, Integer points) {
         super(f, l, u, p);
         this.points = points;
     }
 
+    public Buyer() {
+
+    }
+    @Override
+    public void printDetailedInfo(Person p) {
+        p.printInfo();
+        System.out.println(p.getPoints());
+        System.out.println(p.getPreference());
+        System.out.println(p.getClass());
+    }
 
     @Override
     public String toString() {
@@ -26,6 +47,8 @@ public class Buyer extends Person implements Abilities{
     @Override
     public void printInfo() {
         System.out.printf("""
+                ---------------------------------
+                |   Customer
                 ---------------------------------
                 | Name: %s %s
                 | Username: %s
@@ -43,6 +66,17 @@ public class Buyer extends Person implements Abilities{
 
         for (Item i : inventory)
             System.out.printf("| \t\t %s\n", i.toString());
+
+    }
+
+    public void setPreference(String info) {
+        this.preference = info;
+        System.out.println(" - buyer preference changed ");
+    }
+
+    public String getPreference() {
+        System.out.println("sorry, this information is only available for admins and users with higher priviledges");
+        return "<redacted>";
 
     }
 

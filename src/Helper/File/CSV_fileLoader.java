@@ -19,8 +19,7 @@ public class CSV_fileLoader extends CSV_fileHandler {
             String cLine;
             String header = buffReader.readLine(); // this skips
 
-            if (header == null)
-                return; // nothing to-do here
+            if (header == null)               return;
 
             while ( (cLine =  buffReader.readLine()) !=  null) {
                 String[] dChunk = cLine.split(",");

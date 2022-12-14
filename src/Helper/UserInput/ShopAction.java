@@ -4,6 +4,7 @@ import Controller.PersonActions;
 import Controller.AdminControl;
 import Helper.File.CSV_fileLoader;
 import Helper.File.CSV_fileWriter;
+import Model.Person;
 import Utils.SOUT_utils;
 import Model.Buyer;
 import Model.Item;
@@ -27,6 +28,9 @@ public class ShopAction {
 
     public static void startShop() throws IOException {
         loadCSVs();
+
+
+
 
         for (int x = 0; x < 1; x++) ;
 
@@ -67,7 +71,8 @@ public class ShopAction {
     }
 
     private static void updateCSVs() {
-        if (accountsFile.exists()) accountsFile.delete();
+        if (accountsFile.exists())
+            accountsFile.delete();
         CSV_fileWriter.createCSV(accountsFile.toString(), "FirstName,LastName,Username,Password,Balance\n");
 
         if (itemsFile.exists()) itemsFile.delete();
@@ -130,7 +135,7 @@ public class ShopAction {
         String pass = uInput.nextLine();
 
         if (ShopUtils.isInputInvalid(fName, lName, uName, pass)) return;
-        SOUT_utils.delayMessage(1, String.format("User [%s] has been added !",uName));
+        SOUT_utils.delayMessage(1, String.format("User [%s] has been added !", uName));
         listOfBuyers.add(new Buyer(fName, lName, uName, pass));
     }
 }

@@ -18,7 +18,8 @@ public class AdminView extends BasicView implements Views {
                 3.) Show info about Buyers
                 4.) Show List of Items
                 5.) Remove buyer
-                6.) Logout
+                6.) Give Points to Buyer
+                7.) Logout
                 """);
         System.out.print("-> ");
     }

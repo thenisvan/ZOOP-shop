@@ -1,12 +1,9 @@
 package Controller;
 
+import Model.*;
 import Utils.Banners;
 import Utils.SOUT_utils;
 import Utils.ShopUtils;
-import Model.Buyer;
-import Model.Item;
-import Model.Admin;
-import Model.BuyProcess;
 import View.AdminView;
 
 import java.util.ArrayList;
@@ -15,7 +12,7 @@ import java.util.Scanner;
 public class AdminControl {
     private final AdminView adminView = new AdminView();
     private final Scanner uInput = new Scanner(System.in);
-//    lists
+    //    lists
     private static final ArrayList<Buyer> listOfBuyers = Admin.buyers;
     private final ArrayList<Item> shopInventory = Admin.inventory;
     private final ArrayList<BuyProcess> moneyMovementsList = Admin.movements;
@@ -35,7 +32,10 @@ public class AdminControl {
                 case 3 -> adminView.showBuyerInfo(listOfBuyers);
                 case 4 -> adminView.showItems(shopInventory);
                 case 5 -> delBuyer();
-                case 6 -> { return; }
+                case 6 -> assignPoints();
+                case 7 -> {
+                    return;
+                }
 
                 default -> SOUT_utils.delayMessage(1, "Enter only nums in range!");
             }
@@ -84,4 +84,55 @@ public class AdminControl {
 
         System.out.println("\nNo user found!\n");
     }
+
+    public void assignPoints() {
+        if (!ShopUtils.hasBuyers(listOfBuyers))
+            return;
+
+        adminView.showBuyerInfo(listOfBuyers);
+
+        System.out.print("username of buyer: ");
+        String buyerName = uInput.nextLine();
+        System.out.print("Points to give: ");
+        int givenPoints = uInput.nextInt();
+
+        if (ShopUtils.isInputInvalid(buyerName)) return;
+
+
+        for (Buyer buyer : listOfBuyers) {
+            if (buyer.getFirstName().equals(buyerName)) {
+                SOUT_utils.delayMessage(1, String.format("Buyer %s kicked!", buyer.getFirstName()));
+                buyer.setPoints(buyer.getPoints() + givenPoints); // current walue of points +
+                return;
+            }
+        }
+
+        System.out.println("\nNo user found!\n");
+    }
+
+    public void setInfoAsPerson(Buyer acc2) {
+        // UPCASTING
+
+        ((Person)acc2).setPreference("I like to buy electronic stuff..");
+
+        // DOWNCASTING
+
+
+// Admin acc5 = (Admin)acc3;
+//        if (accB instanceof Admin) {
+//            Admin acc5 = (Admin) accB;
+//            acc5.setPass("factory-default");
+//            System.out.println("Password was successfully resetted !!");
+//        }
+//
+//        if (accB instanceof Buyer) {
+//            Buyer acc5 = (Buyer) accB;
+//            acc5.setPoints(acc5.getPoints() + 100);
+//            System.out.printf("Update, user with name %s got extra 50 points!\n", acc5.getFirstName());
+//            System.out.printf("Currently has %d points!\n", acc5.getPoints());
+//        }
+
+        System.out.println("\nNo user found!\n");
+}
+
 }

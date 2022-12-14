@@ -31,12 +31,12 @@ public class MoneyMovementActions {
     public boolean startTransaction() {
         Buyer buyer = BuyProcess.getBuyer();
         Item item = BuyProcess.getItem();
-        Double subTotal = item.getItemPrice() * item.getAmount_toBuy();
-        Double discount = calculateDiscount(subTotal, buyer.getPoints());
-        Double discountedPrice = subTotal-discount;
+        double subTotal = item.getItemPrice() * item.getAmount_toBuy();
+        double discount = calculateDiscount(subTotal, buyer.getPoints());
+        double discountedPrice = subTotal-discount;
         int pointsFetched = calculatePoints(item, item.getAmount_toBuy());
 
-//        TODO: ask how many points buyer wants to use
+//        TODO: ask how many points buyer wants to use // or nah
 
         if (buyer.getMoney() < ( discountedPrice )) {
             System.out.println("You need more money. ");
@@ -44,8 +44,9 @@ public class MoneyMovementActions {
         }
 
         double newBalance = ( ( buyer.getMoney() -( discountedPrice )));
+        System.out.printf("Points used: %d\nDiscount: %f\n",buyer.getPoints(),discount );
         buyer.setBalance(newBalance);
-        buyer.setPoints(buyer.getPoints()+pointsFetched);
+        buyer.setPoints(/*buyer.getPoints()+*/pointsFetched);
 
         SOUT_utils.delayMessage(1, String.format("Your money: $%.2f ", newBalance));
         return true;

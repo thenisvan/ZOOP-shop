@@ -11,5 +11,6 @@ public interface Abilities {
                 """);
     }
     int getPoints();
+     void printAbilities(Person p);
 
 }
